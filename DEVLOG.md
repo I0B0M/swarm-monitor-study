@@ -129,3 +129,30 @@ python3.12 run.py --review test --workers 6
 python3.12 run.py --review-leak test --workers 6
 python3.12 analyze.py --split test
 ```
+
+**Recovery rule (Nov 7, after the quota stop, before any rerun).**
+
+> Infrastructure rule (set Nov 7, after the quota stop, before any rerun): a test game is *not played* if any model call returned a subscription-quota or authentication error instead of a model reply. Such games are moved to `runs/archive/test-infra-failures/`, listed by run ID with their error, and re-run with the identical config (same seed, same rep, same imposter, same keyholder). The rule depends only on the error type, never on the game's outcome. Games that fail for any other reason stay in the denominator, as pre-registered.
+
+This is a post-freeze protocol amendment. The freeze tag is preserved.
+`recovery-v1` pins the runner and backend operational changes. The original
+prompts, checklist, seeds, game and scoring code remain pinned to `freeze-v1`.
+
+| Run ID | Infrastructure error |
+|---|---|
+| `test-S3a-imp-seed107-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed108-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed109-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed110-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed111-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed112-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed113-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed114-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed115-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3a-imp-seed116-r1` | Claude: You've hit your weekly limit · resets 6am (America/New_York) |
+| `test-S3b-imp-seed106-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
+| `test-S3b-imp-seed107-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
+| `test-S3b-imp-seed108-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
+| `test-S3b-imp-seed110-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
+| `test-S3b-imp-seed111-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
+| `test-S3b-imp-seed112-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
