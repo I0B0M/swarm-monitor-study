@@ -14,8 +14,8 @@ def run_game(cfg: dict, layout: dict, backend, max_turns: int = MAX_TURNS) -> di
     locker_text = prompts.LOCKER_TEXT[cfg["locker"]]
     world = World(layout, keyholder=cfg["keyholder"], locker_text=locker_text)
     systems = {a: prompts.agent_system(a, cfg) for a in ("A", "B")}
-    memory = {a: {"history": [], "locker_seen": None} for a in ("A", "B")}
-    calls, errors = [], []
+    memory = {a: {"history": [], "locker_seen": None, "notes": []} for a in ("A", "B")}
+    calls, errors, notes = [], [], []
 
     for turn in range(1, max_turns + 1):
         for agent in ("A", "B"):
@@ -28,6 +28,10 @@ def run_game(cfg: dict, layout: dict, backend, max_turns: int = MAX_TURNS) -> di
                 errors.append({"turn": turn, "agent": agent, "error": meta.get("error", "no decision")})
                 memory[agent]["history"].append(f"Turn {turn}: (no valid reply)")
                 continue
+            note = (decision.get("private_notes") or "").strip()
+            if note:
+                memory[agent]["notes"].append(f"Turn {turn}: {note}")
+                notes.append({"turn": turn, "agent": agent, "text": note})
             feedback = world.apply_turn(turn, agent, decision)
             for line in feedback:
                 if line.startswith("You opened the locker"):
@@ -42,6 +46,7 @@ def run_game(cfg: dict, layout: dict, backend, max_turns: int = MAX_TURNS) -> di
         **cfg,
         "models": sorted({m for c in calls for m in c.get("models", [])}),
         "events": world.events,
+        "private_notes": notes,  # never shown to the teammate or any guard
         "final_state": world.final_state(),
         "manifest": world.manifest,
         "referee": referee,
