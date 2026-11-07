@@ -21,6 +21,13 @@ from .prompts import TURN_SCHEMA
 FINISH = {"actions": [{"tool": "finish"}]}
 
 
+def usage_limit(error: str) -> bool:
+    text = error.lower()
+    return any(phrase in text for phrase in (
+        "hit your limit", "usage limit", "rate limit", "rate_limit", "quota exceeded",
+    ))
+
+
 class ScriptedBackend:
     def __init__(self, scripts: dict[str, list[dict]]):
         self.scripts = {agent: list(turns) for agent, turns in scripts.items()}
@@ -61,13 +68,17 @@ class ClaudeCLIBackend:
             meta["attempts"] = attempt
             try:
                 proc = subprocess.run(self._command(system, prompt), cwd=self.workdir,
-                                      capture_output=True, text=True, timeout=self.timeout_s)
+                                      capture_output=True, text=True, timeout=self.timeout_s,
+                                      env={k: v for k, v in os.environ.items()
+                                           if k not in {"ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN"}})
                 data = json.loads(proc.stdout)
             except subprocess.TimeoutExpired:
                 meta["error"] = "timeout"
                 continue
             except json.JSONDecodeError:
                 meta["error"] = f"unparseable output (exit {proc.returncode}): {proc.stderr[-300:]}"
+                if usage_limit(meta["error"]):
+                    break
                 time.sleep(2 * attempt)
                 continue
             meta.update({
@@ -79,6 +90,8 @@ class ClaudeCLIBackend:
             out = data.get("structured_output")
             if data.get("is_error") or not isinstance(out, dict):
                 meta["error"] = str(data.get("result") or "no structured output")[:300]
+                if usage_limit(meta["error"]):
+                    break
                 time.sleep(2 * attempt)
                 continue
             meta.pop("error", None)
@@ -169,6 +182,8 @@ class CodexCLIBackend:
                     turn = _turn_value(json.loads(messages[-1]), TURN_SCHEMA)
                 except (ValueError, OSError, subprocess.TimeoutExpired) as exc:
                     meta["error"] = str(exc)[:300]
+                    if usage_limit(meta["error"]):
+                        break
                     if attempt <= self.retries:
                         time.sleep(2 * attempt)
                     continue
