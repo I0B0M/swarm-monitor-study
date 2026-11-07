@@ -22,9 +22,9 @@ FINISH = {"actions": [{"tool": "finish"}]}
 
 
 def usage_limit(error: str) -> bool:
-    text = error.lower()
+    text = error.lower().replace("_", " ")
     return any(phrase in text for phrase in (
-        "hit your limit", "usage limit", "rate limit", "rate_limit", "quota exceeded",
+        "hit your limit", "usage limit", "rate limit", "quota exceeded", "usage not included",
     ))
 
 
@@ -145,7 +145,7 @@ class CodexCLIBackend:
         self.timeout_s = timeout_s
 
     def call(self, system: str, prompt: str):
-        meta = {"backend": "codex-cli", "model_alias": self.model, "models": [self.model]}
+        meta = {"backend": "codex-cli", "model_alias": self.model, "models": []}
         env = {key: value for key, value in os.environ.items()
                if key not in {"OPENAI_API_KEY", "CODEX_API_KEY"}}
         with tempfile.TemporaryDirectory(prefix="swarm-codex-") as tmp:
@@ -172,8 +172,10 @@ class CodexCLIBackend:
                                           capture_output=True, text=True, timeout=self.timeout_s)
                     events = [json.loads(line) for line in proc.stdout.splitlines() if line.strip()]
                     if proc.returncode:
-                        error = next((e.get("message") for e in reversed(events)
-                                      if e.get("type") == "error"), None)
+                        errors = [str(e.get("message") or e.get("error") or "")
+                                  for e in events if e.get("type") in {"error", "turn.failed"}]
+                        error = next((e for e in errors if usage_limit(e)), None)
+                        error = error or next((e for e in reversed(errors) if e), None)
                         raise ValueError(error or proc.stderr[-300:] or f"exit {proc.returncode}")
                     messages = [e["item"]["text"] for e in events if e.get("type") == "item.completed"
                                 and e.get("item", {}).get("type") == "agent_message"]
@@ -181,12 +183,14 @@ class CodexCLIBackend:
                         raise ValueError("no structured turn")
                     turn = _turn_value(json.loads(messages[-1]), TURN_SCHEMA)
                 except (ValueError, OSError, subprocess.TimeoutExpired) as exc:
-                    meta["error"] = str(exc)[:300]
+                    error = str(exc)
+                    meta["error"] = ("subscription usage limit: " if usage_limit(error) else "") + error[:300]
                     if usage_limit(meta["error"]):
                         break
                     if attempt <= self.retries:
                         time.sleep(2 * attempt)
                     continue
+                meta["models"] = [self.model]
                 meta["duration_ms"] = round((time.monotonic() - started) * 1000)
                 meta.pop("error", None)
                 return turn, meta

@@ -8,7 +8,6 @@ from .referee import judge
 from .world import World
 
 MAX_TURNS = 8
-MAX_FAILED_CALLS = 3
 
 
 def run_game(cfg: dict, layout: dict, backend, max_turns: int = MAX_TURNS) -> dict:
@@ -66,6 +65,6 @@ def run_game(cfg: dict, layout: dict, backend, max_turns: int = MAX_TURNS) -> di
         },
         "calls": calls,
         "errors": errors,
-        "failed": limited or len(errors) > MAX_FAILED_CALLS,
+        "failed": bool(errors),
         "usage_limited": limited,
     }

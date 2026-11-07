@@ -38,14 +38,19 @@ def now():
     return datetime.now(timezone.utc)
 
 
-def check_frozen(args, parser):
-    if (args.imposter_backend, args.imposter_model or CODEX_MODEL, args.model, args.guard_model) != (
-            "codex-cli", CODEX_MODEL, HONEST_MODEL, GUARD_MODEL):
-        parser.error("test requires the frozen Codex imposter, Haiku crewmate, and Sonnet guard")
-    if args.n is not None or not args.guard or args.cells not in (None, "all"):
-        parser.error("test requires all preregistered cells and the checklist guard")
+def check_frozen(args, parser, out, *, play):
+    if args.guard_model != GUARD_MODEL:
+        parser.error("test reviews require the frozen Sonnet model")
+    if out.resolve() != (ROOT / "runs").resolve():
+        parser.error("test games and reviews use the canonical runs/test directory")
+    if play:
+        if (args.imposter_backend, args.imposter_model or CODEX_MODEL, args.model) != (
+                "codex-cli", CODEX_MODEL, HONEST_MODEL):
+            parser.error("test requires the frozen Codex imposter and Haiku crewmate")
+        if args.n is not None or not args.guard or args.cells not in (None, "all"):
+            parser.error("test requires all preregistered cells and the checklist guard")
     frozen = subprocess.run(["git", "diff", "--quiet", "freeze-v1", "--",
-                             "run.py", "seeds.json", "swarm"], cwd=ROOT)
+                             "run.py", "seeds.json", "swarm", "analyze.py"], cwd=ROOT)
     if frozen.returncode != 0:
         parser.error("test code or seeds do not match freeze-v1")
 
@@ -111,17 +116,24 @@ def run_review(args, out: Path) -> int:
     print(f"{len(paths)} games need a guard verdict")
 
     def one(path):
+        if (args.review or args.review_leak) == "test" and now() >= TEST_CUTOFF:
+            return None
         record = json.loads(path.read_text())
         record["guards"]["checklist"] = review(record, guard)
         record["guard_finished_at"] = now().isoformat()
         write_json(path, record)
         return record
 
+    errors = 0
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         for done, r in enumerate(pool.map(one, paths), 1):
+            if r is None:
+                errors += 1
+                continue
             g = r["guards"]["checklist"]
+            errors += g["verdict"] is None
             print(f"[{done}/{len(paths)}] {r['run_id']}: guard={g['verdict']}/{g.get('suspicion')}", flush=True)
-    return 0
+    return int(bool(errors))
 
 
 def run_review_leak(args, out: Path) -> int:
@@ -135,6 +147,8 @@ def run_review_leak(args, out: Path) -> int:
     backend = ClaudeCLIBackend(model=args.guard_model, schema=leak.LEAK_SCHEMA)
 
     def one(path):
+        if (args.review or args.review_leak) == "test" and now() >= TEST_CUTOFF:
+            return None
         record = json.loads(path.read_text())
         record["leak"] = leak.review(record, backend)
         record["leak"]["reviewed_at"] = now().isoformat()
@@ -144,6 +158,9 @@ def run_review_leak(args, out: Path) -> int:
     errors = 0
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         for done, record in enumerate(pool.map(one, paths), 1):
+            if record is None:
+                errors += 1
+                continue
             result = record["leak"]
             errors += result["conveyed"] is None
             print(f"[{done}/{len(paths)}] {record['run_id']}: asked={result['asked_by']} "
@@ -258,13 +275,17 @@ def main() -> int:
     if args.scripted:
         return with_split_lock(out, "scripted", lambda: run_scripted(args, out))
     if args.review:
+        if args.review == "test":
+            check_frozen(args, p, out, play=False)
         return with_split_lock(out, args.review, lambda: run_review(args, out))
     if args.review_leak:
+        if args.review_leak == "test":
+            check_frozen(args, p, out, play=False)
         return with_split_lock(out, args.review_leak, lambda: run_review_leak(args, out))
     if not args.split:
         p.error("give --scripted, --review, --review-leak or --split")
     if args.split == "test":
-        check_frozen(args, p)
+        check_frozen(args, p, out, play=True)
     return with_split_lock(out, args.split, lambda: run_split(args, out))
 
 
