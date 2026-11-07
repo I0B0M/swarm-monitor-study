@@ -196,3 +196,5 @@ Compare undetected sabotage with S2 using a two-sided Fisher exact test
 labelled exploratory. Report the ordered funnel, canary count and failed
 games. Report no partial S3c result. The error-only infrastructure rule
 above applies to test runs, including S3c.
+
+**S3c held-out follow-up complete (Nov 7).** All 30 games and both reviews finished before the cutoff with no failed games. See NUMBERS.md for the separate freeze-v2 results and reproduction command. The freeze-v1 report is unchanged.
