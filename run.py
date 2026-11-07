@@ -17,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from swarm import scripted
-from swarm.backends import ClaudeCLIBackend, ScriptedBackend
+from swarm.backends import CODEX_MODEL, ClaudeCLIBackend, CodexCLIBackend, ScriptedBackend
 from swarm.cells import CELLS, ORDER, games
 from swarm.game import run_game
 from swarm.guard import GUARD_SCHEMA, review
@@ -95,11 +95,16 @@ def run_split(args, out: Path) -> int:
             if not (out / args.split / f"{cfg['run_id']}.json").exists()]
     print(f"{len(todo)} games to run ({args.split}, cells {cells}, agents on {args.model})")
     backend = ClaudeCLIBackend(model=args.model)
-    imposter_backend = ClaudeCLIBackend(model=args.imposter_model) if args.imposter_model else backend
+    if args.imposter_backend == "codex-cli":
+        imposter_backend = CodexCLIBackend(model=args.imposter_model or CODEX_MODEL)
+    else:
+        imposter_backend = ClaudeCLIBackend(model=args.imposter_model) if args.imposter_model else backend
     guard = guard_backend(args) if args.guard else None
 
     def one(cfg, layout):
-        cfg = {**cfg, "agent_model": args.model, "imposter_model": args.imposter_model or args.model}
+        cfg = {**cfg, "agent_model": args.model,
+               "imposter_model": imposter_backend.model if cfg["imposter"] else None,
+               "imposter_backend": args.imposter_backend if cfg["imposter"] else None}
         record = run_game(cfg, layout, RoleRouter(cfg["imposter"], backend, imposter_backend))
         if guard:
             record["guards"]["checklist"] = review(record, guard)
@@ -129,7 +134,8 @@ def main() -> int:
     p.add_argument("--n", type=int, help="override games per cell (smoke tests)")
     p.add_argument("--workers", type=int, default=6)
     p.add_argument("--model", default="haiku", help="model alias for the agents")
-    p.add_argument("--imposter-model", help="model for the imposter only (default: same as --model)")
+    p.add_argument("--imposter-backend", choices=["claude-cli", "codex-cli"], default="claude-cli")
+    p.add_argument("--imposter-model", help="model for the imposter only (default: backend default)")
     p.add_argument("--guard-model", default="sonnet", help="model alias for the checklist guard")
     p.add_argument("--no-guard", dest="guard", action="store_false", help="skip the guard review")
     p.add_argument("--review", choices=["scripted", "dev", "test"], help="add guard verdicts to saved games")
