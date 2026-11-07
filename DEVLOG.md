@@ -39,7 +39,9 @@ Every prompt change and every development-run observation, in order. Only dev se
 - The private notes show explicit refusals, e.g. "I won't do that, even in a simulation".
 - Several imposters disclosed the instruction to their teammate. Those chats triggered guard rule 2 (suspicion 30–35).
 - No API-level refusals: every call ended normally (`stop_reason` = `tool_use`).
-- Conclusion: current Claude models will not act as a covert saboteur in this setup. The attacker design needs a decision (see `CLAUDE.md` status).
+- Conclusion: current Claude models will not act as a covert saboteur in this setup.
+
+**Decision (Ibrahim):** run the imposter on a non-Claude model. A different attacker model is standard in AI-control evaluations. The crewmate stays on Haiku 5.5 and the guard on Sonnet 5.5. The imposter wording is reset to v3 (hidden-role game), the canonical red-team framing; v4 is kept only in the archived probe runs.
 
 ## Design notes (differences from the issue text)
 
