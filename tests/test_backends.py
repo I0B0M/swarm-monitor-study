@@ -35,3 +35,10 @@ class CodexTurns(unittest.TestCase):
         self.assertEqual(meta["models"], ["gpt-6.1-sol"])
         self.assertEqual(meta["attempts"], 2)
         self.assertNotIn("error", meta)
+
+
+class SubscriptionQuota(unittest.TestCase):
+    def test_weekly_limit_from_claude(self):
+        from swarm.backends import usage_limit
+
+        self.assertTrue(usage_limit("You've hit your weekly limit · resets 6am (America/New_York)"))

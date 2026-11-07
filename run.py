@@ -18,6 +18,7 @@ import sys
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from datetime import datetime, timezone
 from pathlib import Path
+from threading import Event
 
 from swarm import leak, scripted
 from swarm.backends import (
@@ -47,12 +48,16 @@ def check_frozen(args, parser, out, *, play):
         if (args.imposter_backend, args.imposter_model or CODEX_MODEL, args.model) != (
                 "codex-cli", CODEX_MODEL, HONEST_MODEL):
             parser.error("test requires the frozen Codex imposter and Haiku crewmate")
-        if args.n is not None or not args.guard or args.cells not in (None, "all"):
-            parser.error("test requires all preregistered cells and the checklist guard")
-    frozen = subprocess.run(["git", "diff", "--quiet", "freeze-v1", "--",
-                             "run.py", "seeds.json", "swarm", "analyze.py"], cwd=ROOT)
-    if frozen.returncode != 0:
-        parser.error("test code or seeds do not match freeze-v1")
+        if args.n is not None or not args.guard or args.cells not in (None, "all", "S3a-imp", "S3b-imp"):
+            parser.error("test requires the checklist guard and a preregistered recovery cell")
+    checks = (
+        ("freeze-v1", ["seeds.json", "swarm", "analyze.py", ":(exclude)swarm/backends.py"]),
+        ("recovery-v1", ["run.py", "swarm/backends.py"]),
+    )
+    for ref, paths in checks:
+        frozen = subprocess.run(["git", "diff", "--quiet", ref, "--", *paths], cwd=ROOT)
+        if frozen.returncode != 0:
+            parser.error(f"test code or seeds do not match {ref}")
 
 
 def with_split_lock(out, split, action):
@@ -115,12 +120,18 @@ def run_review(args, out: Path) -> int:
              if json.loads(p.read_text()).get("guards", {}).get("checklist", {}).get("verdict") is None]
     print(f"{len(paths)} games need a guard verdict")
 
+    limited = Event()
+
     def one(path):
+        if limited.is_set():
+            return None
         if (args.review or args.review_leak) == "test" and now() >= TEST_CUTOFF:
             return None
         record = json.loads(path.read_text())
         record["guards"]["checklist"] = review(record, guard)
         record["guard_finished_at"] = now().isoformat()
+        if usage_limit(record["guards"]["checklist"].get("error", "")):
+            limited.set()
         write_json(path, record)
         return record
 
@@ -133,7 +144,7 @@ def run_review(args, out: Path) -> int:
             g = r["guards"]["checklist"]
             errors += g["verdict"] is None
             print(f"[{done}/{len(paths)}] {r['run_id']}: guard={g['verdict']}/{g.get('suspicion')}", flush=True)
-    return int(bool(errors))
+    return 75 if limited.is_set() else int(bool(errors))
 
 
 def run_review_leak(args, out: Path) -> int:
@@ -146,12 +157,18 @@ def run_review_leak(args, out: Path) -> int:
     print(f"{len(paths)} S3b games need leak annotation", flush=True)
     backend = ClaudeCLIBackend(model=args.guard_model, schema=leak.LEAK_SCHEMA)
 
+    limited = Event()
+
     def one(path):
+        if limited.is_set():
+            return None
         if (args.review or args.review_leak) == "test" and now() >= TEST_CUTOFF:
             return None
         record = json.loads(path.read_text())
         record["leak"] = leak.review(record, backend)
         record["leak"]["reviewed_at"] = now().isoformat()
+        if usage_limit(record["leak"]["judge"].get("error", "")):
+            limited.set()
         write_json(path, record)
         return record
 
@@ -166,7 +183,7 @@ def run_review_leak(args, out: Path) -> int:
             print(f"[{done}/{len(paths)}] {record['run_id']}: asked={result['asked_by']} "
                   f"conveyed={result['conveyed']} started={result['started_by']}"
                   f" error={result['judge'].get('error', '-')}", flush=True)
-    return int(bool(errors))
+    return 75 if limited.is_set() else int(bool(errors))
 
 
 def run_split(args, out: Path) -> int:

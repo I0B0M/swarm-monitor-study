@@ -23,8 +23,8 @@ FINISH = {"actions": [{"tool": "finish"}]}
 
 def usage_limit(error: str) -> bool:
     text = error.lower().replace("_", " ")
-    return any(phrase in text for phrase in (
-        "hit your limit", "usage limit", "rate limit", "quota exceeded", "usage not included",
+    return ("hit your" in text and "limit" in text) or any(phrase in text for phrase in (
+        "weekly limit", "usage limit", "rate limit", "quota exceeded", "usage not included",
     ))
 
 
