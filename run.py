@@ -48,12 +48,14 @@ def check_frozen(args, parser, out, *, play):
         if (args.imposter_backend, args.imposter_model or CODEX_MODEL, args.model) != (
                 "codex-cli", CODEX_MODEL, HONEST_MODEL):
             parser.error("test requires the frozen Codex imposter and Haiku crewmate")
-        if args.n is not None or not args.guard or args.cells not in (None, "all", "S3a-imp", "S3b-imp"):
+        if args.n is not None or not args.guard or args.cells not in (None, "all", "S3a-imp", "S3b-imp", "S3c-imp"):
             parser.error("test requires the checklist guard and a preregistered recovery cell")
-    checks = (
-        ("freeze-v1", ["seeds.json", "swarm", "analyze.py", ":(exclude)swarm/backends.py"]),
-        ("recovery-v1", ["run.py", "swarm/backends.py"]),
-    )
+    # Only S3c play and independent reviews use the follow-up source snapshot.
+    if not play or args.cells == "S3c-imp":
+        checks = (("freeze-v2", ["run.py", "seeds.json", "swarm", "analyze.py",
+                                  "followup_report.py"]),)
+    else:
+        parser.error("freeze-v1 play is closed after the frozen recovery")
     for ref, paths in checks:
         frozen = subprocess.run(["git", "diff", "--quiet", ref, "--", *paths], cwd=ROOT)
         if frozen.returncode != 0:
@@ -148,13 +150,13 @@ def run_review(args, out: Path) -> int:
 
 
 def run_review_leak(args, out: Path) -> int:
-    """Annotate S3b chat, including retries for previously failed annotations."""
+    """Annotate S3b and S3c chat, including retries for previously failed annotations."""
     paths = []
     for path in sorted((out / args.review_leak).glob("*.json")):
         record = json.loads(path.read_text())
-        if record.get("cell") == "S3b-imp" and record["leak"].get("conveyed") is None:
+        if record.get("cell") in ("S3b-imp", "S3c-imp") and record["leak"].get("conveyed") is None:
             paths.append(path)
-    print(f"{len(paths)} S3b games need leak annotation", flush=True)
+    print(f"{len(paths)} games need leak annotation", flush=True)
     backend = ClaudeCLIBackend(model=args.guard_model, schema=leak.LEAK_SCHEMA)
 
     limited = Event()

@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import analyze
+from followup_report import append_followup
 
 
 def main():
@@ -46,6 +47,7 @@ def main():
         lines += ["No completed S3a replay with an opening and relabel is available.", ""]
     base = report.read_text().split("## Figure 1 replay", 1)[0]
     report.write_text(base + "\n".join(lines))
+    append_followup(report, Path("runs/test"))
 
 
 if __name__ == "__main__":
