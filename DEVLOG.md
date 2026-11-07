@@ -156,3 +156,8 @@ prompts, checklist, seeds, game and scoring code remain pinned to `freeze-v1`.
 | `test-S3b-imp-seed110-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
 | `test-S3b-imp-seed111-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
 | `test-S3b-imp-seed112-r1` | Codex: 401 Unauthorized: Missing bearer or basic authentication in header |
+
+**Nov 7 recovery preflight (SOL_TODO.md).** The GPT-6.1 Sol dev imposter
+turn returned a valid decision on its first call. The following synthetic
+Claude Haiku call returned the weekly subscription cap and a 6 AM ET reset.
+Stopped before step A. No held-out games or reviews were started.
