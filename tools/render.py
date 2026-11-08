@@ -1,6 +1,8 @@
 """Render figures with a headless Chromium (no plotting library, no network).
 
-The binary comes from $CHROMIUM, else the newest Playwright Chromium in ~/Library/Caches/ms-playwright.
+Pages run in $CHROMIUM, else the newest Playwright Chromium in ~/Library/Caches/ms-playwright. Screenshots use
+Playwright's chrome-headless-shell ($HEADLESS_SHELL), whose viewport equals the window size; Chromium's new headless
+mode keeps part of the window for itself and would clip the bottom of a figure.
 """
 
 from __future__ import annotations
@@ -23,6 +25,16 @@ def chromium() -> str:
     return str(found[-1])
 
 
+def headless_shell() -> str:
+    env = os.environ.get("HEADLESS_SHELL")
+    if env:
+        return env
+    found = sorted(Path.home().glob("Library/Caches/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-*/chrome-headless-shell"))
+    if not found:
+        raise SystemExit("No chrome-headless-shell found: set HEADLESS_SHELL (npx playwright install chromium-headless-shell).")
+    return str(found[-1])
+
+
 def svg_size(svg: str) -> tuple[int, int]:
     m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
     if not m:
@@ -38,7 +50,7 @@ def svg_to_png(svg_path: Path, png_path: Path, scale: int = 2) -> None:
         page = Path(tmp) / "page.html"
         page.write_text(f'<!doctype html><meta charset="utf-8"><style>html,body{{margin:0;padding:0}}svg{{display:block;width:{w}px;height:{h}px}}</style>{svg}',
                         encoding="utf-8")
-        subprocess.run([chromium(), "--headless=new", "--disable-gpu", "--no-first-run", "--hide-scrollbars",
+        subprocess.run([headless_shell(), "--disable-gpu", "--no-first-run", "--hide-scrollbars",
                         f"--force-device-scale-factor={scale}", f"--window-size={w},{h}", f"--screenshot={png_path.resolve()}",
                         f"file://{page}"], check=True, capture_output=True, timeout=120)
 
