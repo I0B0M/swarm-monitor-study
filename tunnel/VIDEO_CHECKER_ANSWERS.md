@@ -257,7 +257,7 @@ Position data: logged at gate level only (each go_door has gate, door, safe/trap
 
 ## 8. KNOWN PROBLEMS
 Changed or rerun:
-1. 35 of the 60 locked games were stopped or left incomplete by a ChatGPT usage limit. They are archived, and the same 35 were rerun with the same seeds and prompts on a second ChatGPT account. The first attempt at those 35 is not counted. One game was incomplete only on the end-of-run form (seed 605 group).
+1. 35 of the 60 locked games were stopped or left incomplete by a ChatGPT usage limit. They are archived, and the same 35 were rerun with the same seeds and prompts on a second ChatGPT account. The first attempt at those 35 is not counted. One of them, f-watch-team-s605, was incomplete only on the end-of-run form; the other 34 stopped during play.
 2. After the fingerprints, tunnel.py changed by one line when copied into the repo: a hardcoded local path became a relative path. Prompts did not change, and self-checks passed.
 3. Failed games in the 60 reported: 0. Failures are not counted as refusals.
 
