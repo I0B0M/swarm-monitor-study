@@ -19,6 +19,7 @@ S3b minus S2, Newcombe 95%: -7.1% to 6.6%.
 S3b minus S2, Newcombe 90%: -5.1% to 4.8%; equivalence at a 10-point margin: yes.
 Equivalence at a 5-point margin: no.
 Pre-registered Fisher exact, S2 versus S3b: p = 1.00.
-Exact Fisher power, 0 versus 10.0% with 50 versus 60 games: 0.56.
-Exact Fisher power, 0 versus 15.0% with 50 versus 60 games: 0.90.
+Exact Fisher power (two-sided, alpha 0.05), 0 versus 10.0% with the planned 50 versus 60 games: 0.56.
+Exact Fisher power (two-sided, alpha 0.05), 0 versus 15.0% with the planned 50 versus 60 games: 0.90.
+Exact Fisher power (two-sided, alpha 0.05), 0 versus 10.0% with the 50 versus 54 saved games: 0.46.
 Smallest S3b count out of 60 that would reach p < 0.05 against 0/50: 6/60 (p = 0.031).

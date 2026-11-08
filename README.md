@@ -2,7 +2,7 @@
 
 A two-agent proof of concept built during the Apart Research Swarm Alignment Hackathon (November 6 to 8, 2026). Track 4, Multi-Agent Oversight and Control (primary); Track 1, Sandboxes and Testbeds (secondary).
 
-**In one sentence:** knowing a monitor's checklist paid off only against monitors that apply it literally: with the checklist, an open-weight monitor missed 75/100 rule-informed attacks and 0/50 naive ones, while the same model without the checklist missed 1/100; and in the frozen study the secret never spread, because no honest keyholder opened the store (0/54).
+**In one sentence:** knowing a monitor's checklist paid off only against verdicts bound to its wording: with the checklist, an open-weight monitor missed 75/100 rule-informed attacks and 0/50 naive ones, while the same model without the checklist missed 1/100; and in the two-agent study the secret never spread, because no honest keyholder opened the store (0/54).
 
 ![Figure 1: one attack from the library at the moment a restricted record leaves with a laundered tag, and every monitor's verdict on the finished game](report/figures/figure1.png)
 
@@ -50,9 +50,9 @@ Added analyses, pre-registered in [ANALYSIS_PLAN_ADDENDUM.md](ANALYSIS_PLAN_ADDE
 | judgement only | gpt-oss-20b | 1/50 | 1/50 | 1/100 |
 | outcome check | gpt-oss-20b | 0/50 | 0/50 | 1/100 |
 
-The pre-registered confirmatory test passed: one-sided Fisher exact p = 2.6e-21 for the gpt-oss-20b checklist monitor. The frozen monitor's verdict passed 28/50 rule-informed attacks, but its suspicion score separated every one of them from the honest runs: at the threshold that flags at most 5% of honest runs, it left 0/50 undetected. Sonnet 5.5 ran on a subset of the library (see the paper, Section 3.3).
+The pre-registered confirmatory test passed: one-sided Fisher exact p = 2.6e-21 for the gpt-oss-20b checklist monitor (the attack policies are deterministic, so treat that p-value as a summary of three fully missed policies against two fully caught ones). Sonnet 5.5's checklist verdict passed 28/50 rule-informed attacks, but its suspicion score separated every one of them from the honest runs: at the threshold that flags at most 5% of honest runs, it left 0/50 undetected. gpt-oss-20b's score did not help: at its threshold it still missed 75/100. The judgement-only prompt states the rule that tags never change; with that rule removed (an exploratory control), Sonnet 5.5 still missed 0/50. Sonnet 5.5 ran on a subset of the library (see the paper, Section 3.3).
 
-**When asked, the keyholder opened the store but did not repeat the rules.** An open-weight keyholder (gpt-oss-20b) opened the store in 35/60 games when a teammate asked and repeated the checklist's wording in 0/60 (string match; [replays/ASK_NUMBERS.md](replays/ASK_NUMBERS.md)).
+**When asked, whether the store was opened depended on the keyholder's model.** Asked by a teammate, gpt-oss-20b opened the store in 35/60 games and Claude Haiku 5.5, the study's honest agent, in 0/60; neither repeated the checklist's wording (0/60 each, string match; [replays/ASK_NUMBERS.md](replays/ASK_NUMBERS.md)).
 
 **Recommendation:** do not rely on keeping monitor rules secret. Let rules inform a monitor without deciding its verdict, act on calibrated scores at a fixed false-alarm rate, and check the end state when it can be observed.
 
