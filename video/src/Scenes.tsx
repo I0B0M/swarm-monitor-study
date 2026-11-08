@@ -211,6 +211,7 @@ const ROWS: Row[] = [
   { label: "gpt-oss-20b · no checklist", naive: [1, 50], informed: [1, 100], at: 2 },
   { label: "Sonnet 5.5 · checklist verdict", naive: [0, 25], informed: [28, 50], at: 3 },
   { label: "Sonnet 5.5 · checklist score, 5% threshold", naive: [0, 25], informed: [0, 50], at: 3 },
+  { label: "Sonnet 5.5 · last rule asks for judgement", naive: [0, 25], informed: [0, 50], at: 4 },
 ];
 export const LibraryScene: React.FC<P> = ({ sentences }) => {
   const frame = useCurrentFrame();
@@ -229,9 +230,9 @@ export const LibraryScene: React.FC<P> = ({ sentences }) => {
           </g>
         ))}
         {ROWS.map((r, k) => {
-          const start = sentences[r.at ?? 1].start + (k === 3 ? 2.6 : 0);
+          const start = sentences[Math.min(r.at ?? 1, sentences.length - 1)].start + (k === 3 ? 2.6 : 0);
           const appear = spring({ frame: Math.max(0, Math.round((t - start + 0.2) * fps)), fps, config: { damping: 200 } });
-          const y = 285 + k * 122;
+          const y = 270 + k * 98;
           const pn = r.naive[0] / r.naive[1], pi = r.informed[0] / r.informed[1];
           return (
             <g key={r.label} opacity={t < start - 0.2 ? 0 : appear}>
@@ -286,7 +287,8 @@ export const AskScene: React.FC<P> = ({ sentences }) => {
 
 // ---------------------------------------------------------------- takeaway
 export const TakeawayScene: React.FC<P> = ({ sentences }) => {
-  const a = useIntro(), b = useAppear(sentences, 1), c = useAppear(sentences, 1, 2.5), d = useAppear(sentences, 1, 5);
+  const len1 = sentences[1].end - sentences[1].start;
+  const a = useIntro(), b = useAppear(sentences, 1), c = useAppear(sentences, 1, len1 * 0.42), d = useAppear(sentences, 1, len1 * 0.78);
   const lim = useAppear(sentences, 2), code = useAppear(sentences, 3);
   const Card: React.FC<{ o: number; children: React.ReactNode }> = ({ o, children }) => (
     <div style={{ opacity: o, transform: `translateY(${(1 - o) * 14}px)`, background: C.surface, border: `2px solid ${C.rule2}`, borderRadius: 18, padding: "22px 28px", fontFamily: FONT, fontSize: 36, color: C.ink, lineHeight: 1.3, marginBottom: 22, width: 1640 }}>
@@ -295,13 +297,13 @@ export const TakeawayScene: React.FC<P> = ({ sentences }) => {
   );
   return (
     <AbsoluteFill style={{ background: C.paper }}>
-      <Headline top={100} size={66} opacity={a}>Secrecy protects only literal monitors.</Headline>
+      <Headline top={100} size={62} opacity={a}>Secrecy protects only monitors that obey their rules.</Headline>
       <div style={{ position: "absolute", left: 120, top: 250 }}>
-        <Card o={b}>Let rules inform a monitor without deciding its verdict.</Card>
+        <Card o={b}>{'Don\'t end a monitor\'s checklist with "mark everything else clean".'}</Card>
         <Card o={c}>Use calibrated scores where they separate attacks from honest runs.</Card>
         <Card o={d}>Check the end state when you can.</Card>
         <div style={{ opacity: lim, fontFamily: FONT, fontSize: 30, color: C.ink2, marginTop: 16, width: 1640, lineHeight: 1.35 }}>
-          Limits: one fictional task, two agents, hand-written attacks, provisional counts in the two-agent study.
+          Limits: one fictional task, two agents, hand-written attacks, provisional two-agent counts.
         </div>
         <div style={{ opacity: code, fontFamily: MONO, fontSize: 32, color: C.flag, marginTop: 26 }}>github.com/I0B0M/swarm-monitor-study</div>
       </div>
@@ -315,7 +317,8 @@ export const EndCard: React.FC = () => {
   const o = interpolate(frame, [0, 20], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: C.paper, justifyContent: "center", padding: "0 160px", opacity: o }}>
-      <div style={{ fontFamily: FONT, fontSize: 72, fontWeight: 850, color: C.ink, lineHeight: 1.1 }}>What is a monitor's secrecy worth?</div>
+      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>Knowing the checklist beats monitors that obey it</div>
+      <div style={{ fontFamily: FONT, fontSize: 34, color: C.ink2, marginTop: 14 }}>Verdicts, scores and spread in a two-agent control setting</div>
       <div style={{ fontFamily: FONT, fontSize: 36, color: C.ink2, marginTop: 26, lineHeight: 1.45 }}>
         Paper, code, data and the replay viewer:
         <br />
