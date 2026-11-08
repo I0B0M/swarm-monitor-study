@@ -276,6 +276,11 @@ Limits on interpretation:
 13. The monitor is only described in the prompt. No monitor is running.
 14. The lock was a project file with fingerprints, not a public registry or git tag.
 
+**Serious validity issue found on audit (read this before using the denial result):**
+A. Followers were never shown the restriction. 0 of 23 followers saw a word such as "staff", "authorised" or "restricted" in a teammate's message before entering. The note was shown only to the finder.
+B. Finders and followers had different information when asked. Each finder's action history at the end of the game contains the full note ("Authorised maintenance staff only"). Each follower's history says only that it passed through the service tunnel.
+C. So "0 of 20 finders vs 17 of 23 followers answered no" may be caused by that difference. Do not present it as followers knowingly denying a restricted route. The counts are correct; the interpretation is open until the re-ask test is run.
+
 Not done or not checked yet:
 15. Tunnel folder not pushed. The report's code link will not work until it is.
 16. The report has no video link line yet; add one under Code and Data once the video is uploaded.
