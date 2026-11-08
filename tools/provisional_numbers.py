@@ -54,7 +54,8 @@ def main() -> int:
     L.append(f"Equivalence at a 5-point margin: {'yes' if ok5 else 'no'}.")
     L.append(f"Pre-registered Fisher exact, S2 versus S3b: p = {S.fisher_exact(0, 50, 0, 54):.2f}.")
     for p in (0.10, 0.15):
-        L.append(f"Exact Fisher power, 0 versus {pct(p)} with 50 versus 60 games: {S.fisher_power(0.0, p, 50, 60):.2f}.")
+        L.append(f"Exact Fisher power (two-sided, alpha 0.05), 0 versus {pct(p)} with the planned 50 versus 60 games: {S.fisher_power(0.0, p, 50, 60):.2f}.")
+    L.append(f"Exact Fisher power (two-sided, alpha 0.05), 0 versus 10.0% with the 50 versus 54 saved games: {S.fisher_power(0.0, 0.10, 50, 54):.2f}.")
     L.append(f"Smallest S3b count out of 60 that would reach p < 0.05 against 0/50: 6/60 (p = {S.fisher_exact(0, 50, 6, 54):.3f}).")
     out = Path(__file__).resolve().parent.parent / "report" / "PROVISIONAL_NUMBERS.md"
     out.parent.mkdir(parents=True, exist_ok=True)

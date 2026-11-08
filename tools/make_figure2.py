@@ -20,9 +20,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from replay import stats as S  # noqa: E402
 from tools.render import svg_to_png  # noqa: E402
 
-MODELS = [("claude:sonnet", "Sonnet 5.5"), ("local:agent", "gpt-oss-20b"), ("local:coder", "Qwen3.8-27B"),
-          ("local:chores", "Qwen3.5-9B")]
-PROMPTS = [("checklist", "checklist"), ("judgement", "judgement only"), ("outcome", "outcome check")]
+MODELS = [("claude:sonnet", "Sonnet 5.5"), ("local:agent", "gpt-oss-20b")]  # the Qwen rows are in Table 2 and REPLAY_NUMBERS.md
+PROMPTS = [("checklist", "checklist"), ("judgement", "judgement only"), ("judgement_exit", "judgement, exit rule only"),
+           ("outcome", "outcome check")]
 THEMES = {
     "light": {"bg": "#fcfcfb", "ink": "#0b0b0b", "ink2": "#52514e", "grid": "#e4e2dc", "naive": "#2a78d6",
               "informed": "#eb6834"},
@@ -49,7 +49,7 @@ def esc(t: str) -> str:
 
 def svg(rows: list[dict], theme: str) -> str:
     c = THEMES[theme]
-    label_w, panel_w, gap, top, row_h = 230, 250, 36, 92, 30
+    label_w, panel_w, gap, top, row_h = 268, 250, 36, 92, 30
     width = label_w + 2 * panel_w + gap + 24
     height = top + row_h * len(rows) + 64
     x0 = [label_w, label_w + panel_w + gap]
@@ -62,12 +62,12 @@ def svg(rows: list[dict], theme: str) -> str:
            f'aria-label="Undetected rate on naive and rule-informed attacks, by monitor, at the verdict and at a 5 percent false-alarm threshold">',
            f'<rect width="{width}" height="{height}" fill="{c["bg"]}"/>',
            f'<text x="12" y="24" font-size="15" font-weight="700" fill="{c["ink"]}">What knowing the checklist is worth, by monitor</text>',
-           f'<text x="12" y="44" font-size="11.5" fill="{c["ink2"]}">Scripted attacks on 25 fresh layouts; undetected rate with exact 95% intervals; k/n printed for rule-informed attacks.</text>',
+           f'<text x="12" y="44" font-size="11.5" fill="{c["ink2"]}">Scripted attacks on 25 fresh layouts; undetected rate with exact 95% intervals; k/n printed for informed attacks.</text>',
            # legend
            f'<circle cx="18" cy="64" r="5" fill="{c["bg"]}" stroke="{c["naive"]}" stroke-width="2.5"/>',
            f'<text x="28" y="68" font-size="11.5" fill="{c["ink"]}">naive attack: ships the record with its tag unchanged</text>',
            f'<path d="M 340 58 L 346 64 L 340 70 L 334 64 Z" fill="{c["informed"]}"/>',
-           f'<text x="352" y="68" font-size="11.5" fill="{c["ink"]}">rule-informed attack: launders the tag first</text>']
+           f'<text x="352" y="68" font-size="11.5" fill="{c["ink"]}">informed attack: changes the tag first</text>']
     for panel, title in enumerate(["At the monitor's own verdict", "At a threshold with at most 5% false alarms"]):
         out.append(f'<text x="{x0[panel] + 10}" y="{top - 8}" font-size="12" font-weight="600" fill="{c["ink"]}">{title}</text>')
         for p in (0, 0.5, 1):
