@@ -1,7 +1,9 @@
 """Small-sample statistics for proportions, standard library only (the repo has no package manifest).
 
-Every function is exact or a published closed form, and tests/test_stats.py checks each against a
-published value. Methods:
+Every function is exact or a published closed form. tests/test_replay_stats.py checks the values below,
+which were cross-checked on 2026-11-07 against independent implementations: statsmodels 0.15.0
+(confint_proportions_2indep, method "newcomb"; proportion_confint, method "beta") and scipy 1.18.1
+(fisher_exact). Methods:
 - Clopper-Pearson exact interval (Clopper and Pearson 1934); rule of three for 0/n as a cross-check.
 - Wilson score interval (Wilson 1927).
 - Newcombe hybrid score interval for a difference of two independent proportions (Newcombe 1998, method 10).

@@ -1,4 +1,7 @@
-"""Checks replay/stats.py against published values. Run: python -m unittest discover -s tests"""
+"""Checks replay/stats.py on reference values that statsmodels 0.15.0 and scipy 1.18.1 reproduce exactly.
+
+Run: python -m unittest discover -s tests
+"""
 import unittest
 
 from replay import stats as S
@@ -11,24 +14,23 @@ class TestStats(unittest.TestCase):
             self.assertEqual(lo, 0.0)
             self.assertAlmostEqual(hi, 1 - 0.025 ** (1 / n), places=9)
     def test_clopper_pearson_known(self):
-        # Published example: 5/10 gives (0.1871, 0.8129).
+        # Clopper-Pearson 5/10 = (0.1871, 0.8129); statsmodels proportion_confint(method='beta') agrees.
         lo, hi = S.clopper_pearson(5, 10)
         self.assertAlmostEqual(lo, 0.18709, places=4); self.assertAlmostEqual(hi, 0.81291, places=4)
     def test_wilson_newcombe_1998(self):
-        # Newcombe (1998), method 10, example a: 56/70 vs 48/80 -> 0.2000 (0.0524, 0.3339).
+        # Newcombe (1998) hybrid score interval, 56/70 vs 48/80 -> 0.2000 (0.0524, 0.3339); statsmodels method='newcomb' agrees.
         d, lo, hi = S.newcombe_diff(56, 70, 48, 80)
         self.assertAlmostEqual(d, 0.2, places=9); self.assertAlmostEqual(lo, 0.0524, places=3); self.assertAlmostEqual(hi, 0.3339, places=3)
     def test_newcombe_zero_cells(self):
-        # Newcombe (1998) example: 0/10 vs 0/20 -> 0 (-0.1611, 0.2775).
+        # 0/10 vs 0/20 -> 0 (-0.1611, 0.2775); statsmodels method='newcomb' agrees.
         d, lo, hi = S.newcombe_diff(0, 10, 0, 20)
         self.assertAlmostEqual(lo, -0.1611, places=3); self.assertAlmostEqual(hi, 0.2775, places=3)
     def test_fisher_tea(self):
-        # Fisher's lady tasting tea, table [[3,1],[1,3]]: two-sided p = 0.4857.
+        # Fisher's tea table [[3,1],[1,3]]: two-sided p = 0.4857; scipy fisher_exact agrees.
         self.assertAlmostEqual(S.fisher_exact(3, 1, 1, 3), 0.48571, places=4)
     def test_fisher_extreme(self):
-        # [[0,50],[6,54]]: one-sided p = C(54,6)/C(110,6) style check via symmetry with two-sided >= one-sided.
-        p = S.fisher_exact(0, 50, 6, 54)
-        self.assertTrue(0.02 < p < 0.04)
+        # [[0,50],[6,54]]: two-sided p = 0.0308 (scipy fisher_exact).
+        self.assertAlmostEqual(S.fisher_exact(0, 50, 6, 54), 0.03079, places=4)
     def test_betainc_symmetry(self):
         self.assertAlmostEqual(S.betainc(2.5, 2.5, 0.5), 0.5, places=10)
         self.assertAlmostEqual(S.betainc(1, 1, 0.3), 0.3, places=10)

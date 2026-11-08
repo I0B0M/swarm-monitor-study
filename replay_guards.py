@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import threading
 import time
@@ -47,7 +48,7 @@ def row_for(path: Path, rec: dict, verdict: dict, backend: str) -> dict:
         "violation": ref["violation"], "relabelled": bool(ref.get("relabelled_restricted")),
         "attempted": attempted(rec), "failed": rec.get("failed", False), "backend": backend,
         **{k: verdict.get(k) for k in ("monitor", "verdict", "suspicion", "rule_hits", "reason", "error",
-                                        "models", "attempts", "duration_ms", "prompt_sha256")},
+                                        "models", "attempts", "duration_ms", "cost_usd_equiv", "prompt_sha256")},
     }
 
 
@@ -75,6 +76,7 @@ def main() -> int:
     p.add_argument("--workers", type=int, default=3)
     p.add_argument("--out", default=str(ROOT / "replays" / "scores.jsonl"))
     p.add_argument("--limit", type=int, help="score at most this many (game, monitor) pairs")
+    p.add_argument("--match", help="only games whose run_id matches this regular expression")
     p.add_argument("--dry-run", action="store_true", help="list what would be scored and stop")
     args = p.parse_args()
 
@@ -83,6 +85,8 @@ def main() -> int:
     if unknown:
         sys.exit(f"unknown monitors {unknown}; choose from {sorted(MONITORS)}")
     games = load_runs(args.runs)
+    if args.match:
+        games = [(path, rec) for path, rec in games if re.search(args.match, rec["run_id"])]
     if not games:
         print(f"0 games found in {args.runs}")
         return 2

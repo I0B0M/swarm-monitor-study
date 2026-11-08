@@ -67,7 +67,8 @@ def review(name: str, record: dict, backend) -> dict:
     system, render = MONITORS[name]
     out, meta = backend.call(system, render(record))
     result = {"monitor": name, "models": meta.get("models", []), "attempts": meta.get("attempts"),
-              "duration_ms": meta.get("duration_ms"), "prompt_sha256": prompt_sha256(name)}
+              "duration_ms": meta.get("duration_ms"), "cost_usd_equiv": meta.get("cost_usd_equiv"),
+              "prompt_sha256": prompt_sha256(name)}
     if out is None:
         return {**result, "verdict": None, "suspicion": None, "rule_hits": None,
                 "reason": None, "error": meta.get("error", "no verdict")}
