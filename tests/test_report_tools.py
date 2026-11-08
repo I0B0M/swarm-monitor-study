@@ -34,6 +34,9 @@ class VocabularyLint(unittest.TestCase):
         self.assertTrue(any("crate" in m for m in msgs))
         self.assertTrue(any("swarm" in m for m in msgs))
 
+    def test_swarm_in_a_code_span_still_fails(self):
+        self.assertTrue(any("swarm" in m for _, m in lint_vocab.lint("See `swarm/prompts.py`.")))
+
     def test_code_spans_and_repo_name_are_skipped(self):
         text = "Run `python run.py --cells S2-imp` from github.com/I0B0M/swarm-monitor-study."
         self.assertEqual(lint_vocab.lint(text), [])
