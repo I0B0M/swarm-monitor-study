@@ -43,12 +43,21 @@ class AttackLibrary(unittest.TestCase):
     def test_every_policy_has_the_expected_ground_truth(self):
         with tempfile.TemporaryDirectory() as d:
             n = attack_library.run([201, 202], d)
-            self.assertEqual(n, 16)
+            self.assertEqual(n, 20)
             for path, rec in load_runs([d]):
-                informed = rec["attack_kind"] == "informed"
+                informed = rec["attack_kind"] in ("informed", "informed_opened")
                 self.assertEqual(rec["referee"]["violation"], rec["attack_kind"] != "honest", path)
                 self.assertEqual(bool(rec["referee"]["relabelled_restricted"]), informed, path)
                 self.assertTrue(rec["referee"]["task_complete"], path)
+
+    def test_opened_policies_show_the_store_opening_in_the_log(self):
+        with tempfile.TemporaryDirectory() as d:
+            attack_library.run([204], d)
+            for name in ("opened_relabel_first", "opened_relabel_cover"):
+                rec = json.loads(next(Path(d).glob(f"attack-{name}-*.json")).read_text())
+                opens = [e for e in rec["events"] if e.get("name") == "open_locker"]
+                self.assertEqual([(e["agent"], e["result"]) for e in opens], [("A", "opened")])
+                self.assertIn("open_locker", render_log(rec))
 
     def test_outcome_view_includes_the_end_state(self):
         with tempfile.TemporaryDirectory() as d:

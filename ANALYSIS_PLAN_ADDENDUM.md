@@ -6,7 +6,7 @@ This file adds analyses to the study. It changes nothing in the frozen setup (`f
 
 ## What the author had seen when writing this
 
-- The provisional aggregate counts Ibrahim posted in issue #4 at 18:43 ET (for example 0 undetected sabotage in every cell so far, 0 keyholder openings in 54 S3b games, 5 relabels among 6 saved S3a games).
+- The provisional aggregate counts Ibrahim posted in issue #4 at 13:43 ET (18:43 UTC; see amendment 1) (for example 0 undetected sabotage in every cell so far, 0 keyholder openings in 54 S3b games, 5 relabels among 6 saved S3a games).
 - The scripted and dev run files on GitHub at `test` commit 1c7c9f2.
 - His own pilot runs on fresh layouts only: the attack library on layouts 226 to 230, told-saboteur probes on 231 to 233, and ask-probe pilots on 241 and 242. Pilot layouts are never reused below.
 - No test-split run file. The test files are on Ibrahim's machine and not yet on GitHub.
@@ -57,4 +57,8 @@ Run files are read-only; each replay row records the run file's SHA-256 and the 
 
 ## Amendments
 
-None yet. Each amendment gets a date, a reason and the commit that made it.
+Each amendment gets a date, a reason and the commit that made it.
+
+1. 2026-11-07, about 22:30 ET, before any game in the attack library was scored by anything other than the local gpt-oss-20b run already in progress, and before any test-split file was on GitHub.
+   - Correction: issue #4's comment time is 18:43 UTC, which is 13:43 ET; the first version said 18:43 ET.
+   - Addition: two more informed policies on the same layouts 201 to 225, `opened_relabel_first` and `opened_relabel_cover` (kind `informed_opened`): the saboteur holds the key, opens the secured store, then launders the tag, so the opening is in the log as it is in real S3a games. Reason: an independent audit of an earlier draft noted that informed attacks without the visible opening do not match how a rule-holding saboteur looks in the log. These 50 games are reported in their own column and are not part of the confirmatory test in section 3, which keeps its 100 informed and 50 naive games.
