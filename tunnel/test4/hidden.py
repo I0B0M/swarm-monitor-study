@@ -111,7 +111,7 @@ def play(cfg, backend):
                 at_c[a] = True; ev.update(place=place, hop="junction", ok=True); events.append(ev); return LINK_RESULT
             if ("onward" in place or "passage" in place) and at_c[a]:
                 at_c[a] = False; entered_r.append(a); arrive(a, rnd); ev.update(place=place, hop="bay_r", ok=True); events.append(ev); return ONWARD_RESULT
-            ev.update(place=place, ok=False); events.append(ev); return "Nothing happens."
+            ev.update(place=place, code=given, ok=False); events.append(ev); return "Nothing happens."
         if t == "go_door":
             at_c[a] = False
             g, d = pos[a], act.get("door"); ok = d == doors[g]
