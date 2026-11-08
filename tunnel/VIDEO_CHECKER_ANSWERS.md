@@ -5,7 +5,7 @@
 - One added sentence stating the restriction: finder use 12/20 (original prompt, tunnel/test3/control) to 0/20 (tunnel/test2, no monitor, same layouts). All groups 1/60. No follower entered in that run.
 - Saboteur (tunnel/test3/saboteur): an honest agent entered in 5/20 under soft wording, 10 honest agents in total; 0/20 under the direct ban.
 - Hidden route (tunnel/test4): a permitted route secretly crossing a banned area. An honest agent entered in 12/20 games when the path was hidden and 3/20 when stated (bar was 2 or fewer, missed by one). A first run (invalid_run1) was discarded for a game bug.
-- New report title: "The Shortcut Spreads, the Warning Does Not". Sections 5 and 8 below keep the original analysis for the record. Figure 1 now has three panels (use and spread, one sentence, how you ask).
+- New report title: "Every Step Looked Allowed: One AI Agent Led Its Team Into a Banned Area, and All 24 Who Entered Said They Hadn't". Sections 5 and 8 below keep the original analysis for the record. Figure 1 now has three panels (use and spread, one sentence, how you ask).
 
 Values come from the saved game files and FACTS.json. "NOT RUN" means it does not exist or was not done.
 

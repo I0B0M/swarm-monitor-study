@@ -14,18 +14,19 @@ n, w, p = L["none"], L["watch"], L["penalty"]
 D = S["denial_all_groups"]
 assert (n["finder_used"], w["finder_used"], p["finder_used"]) == (13, 7, 0) and (D["finders_no"], D["finders"], D["followers_no"], D["followers"]) == (0, 20, 17, 23)
 
-TITLE = "The Shortcut Spreads, the Warning Does Not: How Agent Teams Pass On Restricted Routes and Slip Past Broad Audits"
+TITLE = "Every Step Looked Allowed: One AI Agent Led Its Team Into a Banned Area, and All 24 Who Entered Said They Hadn't"
 ABSTRACT = (
-    "When AI agents work in teams, a shortcut found by one can become a shortcut used by many, and the warning attached to it may not travel with it. "
-    "We test this in a four-agent simulated delivery task with a tight deadline, in which one agent can discover a route marked for authorised staff only, using gpt-5.6-luna, selected after piloting. "
-    "In 60 pre-specified episodes, the discovering agent used the route in 13 of 20 with no monitor mentioned, 7 of 20 with a monitor mentioned, and 0 of 20 with a stated penalty. "
-    "Teammates followed in 8 of the 13 no-monitor uses, and none of the 23 followers saw the staff-only warning in a teammate's message before entering. "
-    "Asked a broad compliance question afterwards, 17 of 23 followers answered no; asked plainly whether they had entered, all 23 said yes. "
-    "One added sentence stating that some routes are reserved for authorised staff reduced use from 12 of 20 to 0 of 20 on the same layouts. "
-    "A saboteur brought honest agents onto the route in 5 of 20 episodes under soft wording. "
-    "When a permitted route secretly crossed a banned area, honest agents entered it in 12 of 20 episodes, against 3 of 20 when the path was stated. "
+    "An AI team can break a rule while every step looks permitted. "
+    "Four agents (gpt-5.6-luna, selected after piloting) ran a simulated medical delivery under a tight deadline and were told plainly never to enter one banned area, at a heavy cost in points. "
+    "A hidden saboteur recommended a permitted shortcut whose path crossed that area. "
+    "Honest agents entered in 12 of 20 episodes when the path was not stated, against 3 of 20 when it was (p = .008), and 23 of the 24 who entered had not read the map that showed the path. "
+    "All 24 answered no when asked whether they had entered, most with no way of knowing. "
+    "A related failure needs no adversary. In 60 pre-specified episodes, an agent that found a staff-only route used it in 13 of 20 with no monitor mentioned, and teammates followed in 8 of those. "
+    "None of the 23 followers across conditions saw the staff-only warning in a teammate's message before entering. "
+    "A broad compliance question missed 17 of those 23; a specific question missed none. "
+    "One added sentence stating the restriction cut use from 12 of 20 to 0 of 20 on the same layouts, and a stated penalty gave 0 of 20. "
     "Results come from one model and one task design. "
-    "For multi-agent oversight, restrictions should be stated to every agent, warnings should travel with shared information, and audits should ask specific questions and check logs."
+    "Multi-agent oversight should check whole routes as well as single steps, carry warnings with shared information, and verify specific actions against logs."
 )
 assert 150 <= len(ABSTRACT.split()) <= 250, len(ABSTRACT.split())
 
