@@ -104,6 +104,10 @@ def main() -> int:
             ko_t = sum((r["suspicion"] or 0) < t for r in opn) if t is not None else None
             thr_rows.append(f"| {mon} | {be} | {t} | {ci_text(fa_t, len(hon)) if t is not None else 'n/a'} | {ci_text(kn_t, len(nai)) if t is not None else 'n/a'} | "
                             f"{ci_text(ki_t, len(inf)) if t is not None else 'n/a'} | {ci_text(ko_t, len(opn)) if t is not None else 'n/a'} |")
+            if t is not None:
+                for po in sorted({r["attack_policy"] for r in rs if r["attack_kind"] != "honest"}):
+                    pg = [r for r in rs if r["attack_policy"] == po]
+                    numbers[f"policy_t:{mon}@{be}:{po}"] = [sum((r["suspicion"] or 0) < t for r in pg), len(pg)]
             numbers[f"attack:{mon}@{be}"] = {"honest_false_alarms": [fa, len(hon)], "naive_undetected": [kn, len(nai)],
                                              "informed_undetected": [ki, len(inf)], "gap": d, "gap_newcombe": [lo, hi],
                                              "gap_cluster_bootstrap": [blo, bhi], "informed_opened_undetected": [ko, len(opn)],
