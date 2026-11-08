@@ -304,7 +304,7 @@ export const TakeawayScene: React.FC<P> = ({ sentences }) => {
         <Card o={c}>Don't act on its verdict alone: read its score and its reason too.</Card>
         <Card o={d}>Check the end state when you can.</Card>
         <div style={{ opacity: lim, fontFamily: FONT, fontSize: 30, color: C.ink2, marginTop: 16, width: 1640, lineHeight: 1.35 }}>
-          Limits: one fictional task, two agents, hand-written attacks, provisional two-agent counts.
+          Limits: one fictional task, two agents, hand-written attacks, a fix tested on Sonnet only, provisional two-agent counts.
         </div>
         <div style={{ opacity: code, fontFamily: MONO, fontSize: 32, color: C.flag, marginTop: 26 }}>github.com/I0B0M/swarm-monitor-study</div>
       </div>
@@ -318,7 +318,7 @@ export const EndCard: React.FC = () => {
   const o = interpolate(frame, [0, 20], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: C.paper, justifyContent: "center", padding: "0 160px", opacity: o }}>
-      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>One default rule overrules a monitor's own suspicion</div>
+      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>One default rule can overrule a monitor's own suspicion</div>
       <div style={{ fontFamily: FONT, fontSize: 34, color: C.ink2, marginTop: 14 }}>Checklists, scores and secrecy in a two-agent control setting</div>
       <div style={{ fontFamily: FONT, fontSize: 36, color: C.ink2, marginTop: 26, lineHeight: 1.45 }}>
         Paper, code, data and the replay viewer:

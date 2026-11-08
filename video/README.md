@@ -1,6 +1,6 @@
 # Explainer video
 
-A 3:45 narrated explainer (1920x1080, 30 fps) built with Remotion from the replay viewer's own frames, with numbers taken from the repository's numbers files. Narration is Kokoro-82M, an open-weight text-to-speech model (Apache-2.0), run offline; nothing is sent to a speech service.
+A 3:56 narrated explainer (1920x1080, 30 fps) built with Remotion from the replay viewer's own frames, with numbers taken from the repository's numbers files. Narration is Kokoro-82M, an open-weight text-to-speech model (Apache-2.0), run offline; nothing is sent to a speech service.
 
 **What is in it:** `narration/script.json` holds each scene's spoken text (`tts`) and on-screen caption (`caption`) with the file each number comes from (`sources`); `src/` holds the scenes; `public/frames/` holds the viewer frames.
 
@@ -23,6 +23,6 @@ npx remotion ffmpeg -y -i out/explainer.mp4 -vn -ac 1 -ar 16000 -c:a pcm_s16le o
 python narration/check_render.py out/audio16k.wav # the rendered audio, cut where the timeline says each sentence plays
 ```
 
-On the current render: duration 225.05 s; word error rate 3.0% over 540 words on the rendered audio (whisper large-v3-turbo). The ask scene's 12.2% is spelling, not speech: the voice says "Quen 3.8, 27B" for Qwen3.8-27B and whisper writes it that way. The voice synthesises one sentence at a time, which also gives the captions their timing.
+On the current render: duration 236.31 s; word error rate 2.5% over 568 words on the rendered audio (whisper large-v3-turbo). The ask scene's 6.1% is mostly spelling, not speech: the voice says "Quen 3.8, 27B" for Qwen3.8-27B and whisper writes it that way. The voice synthesises one sentence at a time, which also gives the captions their timing.
 
 Remotion is free for teams of up to three people; see remotion.dev/license.
