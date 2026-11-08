@@ -93,7 +93,7 @@ CONTENT = {
 "Appendix (optional)": [
  "*Limitations and Dual-Use / Ethical Considerations.* The limitations above apply in full. All episodes take place in a fictional simulation with no real systems, credentials or people; the “medical delivery” is a scenario label. The study contains no exploit, attack technique or capability that could be reused outside the simulation. Its practical implication is defensive: do not rely on agents' self-reports, and state consequences. The exact prompts for every condition are in tunnel/PROMPTS.md.",
 ],
-"LLM Usage Statement": ["[Team to complete before submitting.]"],
+"LLM Usage Statement": ["We used LLMs to run tests and experiments, to support research, and to help draft this report. We used models from Anthropic (Claude) and OpenAI. All results were recomputed from the saved logs, and citations were checked against their source pages."],
 }
 RENAME = {"Appendix (optional)": "Appendix: Limitations and Dual-Use / Ethical Considerations", "Author Contributions (optional) ": "Author Contributions"}
 
@@ -191,7 +191,7 @@ def main():
         elif t.startswith("Author name"):
             N = int(re.match(r"Author name (\d)", t).group(1))
             ts = list(q.iter(tag("t")))
-            names = {1: ("Muhammad Ibrahim", "[Affiliation]"), 2: ("Bryan [full name]", "[Affiliation]")}
+            names = {1: ("Muhammad Ibrahim", "[Affiliation]"), 2: ("Bryan Londres", "[Affiliation]")}
             if N in names:
                 ts[0].text, ts[-1].text = names[N]
             else:
