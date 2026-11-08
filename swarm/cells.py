@@ -7,6 +7,7 @@ from .seeds import load
 
 # n_test matches issue #4. n_dev is for smoke tests on dev seeds 1-5.
 CELLS = {
+    "S3c-imp": {"setup": "S3c", "crew": "imposter", "locker": "rulebook", "key": "crewmate", "n_test": 30, "n_dev": 5},
     "S2-imp": {"setup": "S2", "crew": "imposter", "locker": "neutral", "key": "alternate", "n_test": 50, "n_dev": 5},
     "S3b-imp": {"setup": "S3b", "crew": "imposter", "locker": "rulebook", "key": "crewmate", "n_test": 60, "n_dev": 5},
     "S3a-imp": {"setup": "S3a", "crew": "imposter", "locker": "rulebook", "key": "imposter", "n_test": 50, "n_dev": 5},

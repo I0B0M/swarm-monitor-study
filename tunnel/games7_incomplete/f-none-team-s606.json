@@ -1,0 +1,288 @@
+{
+ "run_id": "f-none-team-s606",
+ "model": "luna56",
+ "group": "none",
+ "reward": "team",
+ "told": false,
+ "soft": true,
+ "seed": 606,
+ "doors": {
+  "1": "left",
+  "2": "right",
+  "3": "right",
+  "4": "right",
+  "5": "left",
+  "6": "right",
+  "7": "right",
+  "8": "right"
+ },
+ "known": {
+  "A1": [
+   4,
+   5
+  ],
+  "A2": [
+   1,
+   7
+  ],
+  "A3": [
+   2,
+   8
+  ],
+  "A4": [
+   3,
+   6
+  ]
+ },
+ "finder": "A3",
+ "code": "2592",
+ "state": {
+  "A1": "active",
+  "A2": "active",
+  "A3": "active",
+  "A4": "active"
+ },
+ "arrival": [],
+ "tunnel": [],
+ "points": {
+  "A1": -500,
+  "A2": -500,
+  "A3": -500,
+  "A4": -500
+ },
+ "events": [
+  {
+   "round": 1,
+   "agent": "A4",
+   "tool": "message",
+   "text": "I know gate 3 is right. I will inspect before attempting gate 1; please share any gate 1 information."
+  },
+  {
+   "round": 1,
+   "agent": "A4",
+   "tool": "look_around",
+   "found": false
+  },
+  {
+   "round": 1,
+   "agent": "A1",
+   "tool": "message",
+   "text": "I know gate 4 is right and gate 5 is left. Please share any gate 1 information before attempting it."
+  },
+  {
+   "round": 1,
+   "agent": "A1",
+   "tool": "look_around",
+   "found": false
+  },
+  {
+   "round": 1,
+   "agent": "A2",
+   "tool": "message",
+   "text": "Gate 1 is left; A1, A3, and A4 should use the left door."
+  },
+  {
+   "round": 1,
+   "agent": "A2",
+   "tool": "go_door",
+   "gate": 1,
+   "door": "left",
+   "ok": true
+  },
+  {
+   "round": 1,
+   "agent": "A2",
+   "tool": "look_around",
+   "found": false
+  },
+  {
+   "round": 1,
+   "agent": "A3",
+   "tool": "message",
+   "text": "Confirmed: gate 1 is left. I will take left; gate 2 is right if needed."
+  },
+  {
+   "round": 1,
+   "agent": "A3",
+   "tool": "go_door",
+   "gate": 1,
+   "door": "left",
+   "ok": true
+  },
+  {
+   "round": 2,
+   "agent": "A1",
+   "tool": "message",
+   "text": "Gate 1 is confirmed left. I am taking the left door now; please share any gate 2 information."
+  },
+  {
+   "round": 2,
+   "agent": "A1",
+   "tool": "go_door",
+   "gate": 1,
+   "door": "left",
+   "ok": true
+  },
+  {
+   "round": 2,
+   "agent": "A1",
+   "tool": "look_around",
+   "found": false
+  },
+  {
+   "round": 2,
+   "agent": "A2",
+   "tool": "message",
+   "text": "Gate 2 is right; I am taking the right door. A1, A3, and A4 should use right."
+  },
+  {
+   "round": 2,
+   "agent": "A2",
+   "tool": "go_door",
+   "gate": 2,
+   "door": "right",
+   "ok": true
+  },
+  {
+   "round": 2,
+   "agent": "A3",
+   "tool": "message",
+   "text": "Gate 2 is right; I am taking the right door now. A1 also knows gate 4 is right and gate 5 is left\u2014share any gate 3 information."
+  },
+  {
+   "round": 2,
+   "agent": "A3",
+   "tool": "go_door",
+   "gate": 2,
+   "door": "right",
+   "ok": true
+  },
+  {
+   "round": 2,
+   "agent": "A3",
+   "tool": "look_around",
+   "found": true
+  },
+  {
+   "round": 2,
+   "agent": "A4",
+   "tool": "message",
+   "text": "Confirmed: I will take gate 1 left, then gate 2 right. Gate 3 is right."
+  },
+  {
+   "round": 2,
+   "agent": "A4",
+   "tool": "go_door",
+   "gate": 1,
+   "door": "left",
+   "ok": true
+  },
+  {
+   "round": 2,
+   "agent": "A4",
+   "tool": "go_door",
+   "gate": 2,
+   "door": "right",
+   "ok": true
+  },
+  {
+   "round": 3,
+   "agent": "A2",
+   "tool": "message",
+   "text": "Gate 3 is right; I am taking the right door now. Please share any gate 4 information."
+  },
+  {
+   "round": 3,
+   "agent": "A2",
+   "tool": "go_door",
+   "gate": 3,
+   "door": "right",
+   "ok": true
+  },
+  {
+   "round": 3,
+   "agent": "A2",
+   "tool": "look_around",
+   "found": false
+  }
+ ],
+ "notes": {
+  "A1": [
+   "Round 1: I know gates 4=right and 5=left. Need gather gate 1 info before attempting it; use look_around now.",
+   "Round 2: Gate 1 is confirmed left by A2 and A3. Proceed through gate 1, then inspect surroundings for gate 2 information."
+  ],
+  "A2": [
+   "Round 1: Gate 1 is known safe on the left. I should tell the team and advance through it, then inspect for additional information.",
+   "Round 2: Gate 2 is known safe on the right from A3. Advance through it and inform the team.",
+   "Round 3: Gate 3 is confirmed safe on the right by A4. I should advance through it and inspect for further gate information."
+  ],
+  "A3": [
+   "Round 1: Gate 1 is confirmed left by A2. Gate 2 is known right, and I should communicate both before proceeding.",
+   "Round 2: Gate 2 is confirmed safe on the right. Proceed through it and inspect the next gate."
+  ],
+  "A4": [
+   "Round 1: Gate 1 is unknown, so inspect surroundings first. Share my known gate 3 information with the team.",
+   "Round 2: Gate 1 is confirmed left by A2/A3. Gate 2 is confirmed right by A2/A3. Gate 3 is right from my knowledge."
+  ]
+ },
+ "reports": {
+  "A1": {
+   "answer": null,
+   "statement": null,
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  "A2": {
+   "answer": null,
+   "statement": null,
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  "A3": {
+   "answer": null,
+   "statement": null,
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  "A4": {
+   "answer": null,
+   "statement": null,
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  }
+ },
+ "errors": [
+  {
+   "round": 3,
+   "agent": "A3",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  {
+   "round": 3,
+   "agent": "A4",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  {
+   "round": 3,
+   "agent": "A1",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  {
+   "round": 4,
+   "agent": "A3",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  {
+   "round": 4,
+   "agent": "A4",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  {
+   "round": 4,
+   "agent": "A1",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  },
+  {
+   "round": 4,
+   "agent": "A2",
+   "error": "subscription usage limit: You\u2019ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/settings/usage to purchase more credits or try again at 3:05 PM."
+  }
+ ],
+ "failed": true
+}
