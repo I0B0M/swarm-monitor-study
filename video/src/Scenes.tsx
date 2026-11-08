@@ -6,6 +6,8 @@ import { Sentence, spokenTime } from "./timeline";
 
 type P = { sentences: Sentence[] };
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+// A scene's headline fades in at the cut, so no scene opens on an empty frame.
+const useIntro = () => interpolate(useCurrentFrame(), [0, 10], [0, 1], clamp);
 
 const Headline: React.FC<{ children: React.ReactNode; top?: number; size?: number; opacity?: number }> = ({ children, top = 150, size = 76, opacity = 1 }) => (
   <div style={{ position: "absolute", left: 120, right: 120, top, color: C.ink, fontFamily: FONT, fontSize: size, fontWeight: 800, lineHeight: 1.12, letterSpacing: -0.5, opacity }}>
@@ -128,7 +130,7 @@ const Stat: React.FC<{ big: string; label: string; color?: string; opacity: numb
 );
 export const FrozenScene: React.FC<P> = ({ sentences }) => {
   const a = useAppear(sentences, 1), b = useAppear(sentences, 1, 2.2), c = useAppear(sentences, 2), d = useAppear(sentences, 3), e = useAppear(sentences, 4);
-  const head = useAppear(sentences, 0);
+  const head = useIntro();
   return (
     <AbsoluteFill style={{ background: C.paper }}>
       <Headline top={110} size={62} opacity={head}>The pre-registered two-agent study</Headline>
@@ -214,7 +216,7 @@ export const LibraryScene: React.FC<P> = ({ sentences }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = spokenTime(frame);
-  const head = useAppear(sentences, 0);
+  const head = useIntro();
   const x0 = 760, w = 960;
   return (
     <AbsoluteFill style={{ background: C.paper }}>
@@ -256,7 +258,7 @@ export const LibraryScene: React.FC<P> = ({ sentences }) => {
 
 // ---------------------------------------------------------------- ask probe (replays/ASK_NUMBERS.md)
 export const AskScene: React.FC<P> = ({ sentences }) => {
-  const head = useAppear(sentences, 0);
+  const head = useIntro();
   const g = useAppear(sentences, 1), h = useAppear(sentences, 2);
   const Bar: React.FC<{ label: string; k: number; n: number; color: string; o: number; note: string }> = ({ label, k, n, color, o, note }) => (
     <div style={{ opacity: o, marginBottom: 54 }}>
@@ -284,7 +286,7 @@ export const AskScene: React.FC<P> = ({ sentences }) => {
 
 // ---------------------------------------------------------------- takeaway
 export const TakeawayScene: React.FC<P> = ({ sentences }) => {
-  const a = useAppear(sentences, 0), b = useAppear(sentences, 1), c = useAppear(sentences, 1, 2.5), d = useAppear(sentences, 1, 5);
+  const a = useIntro(), b = useAppear(sentences, 1), c = useAppear(sentences, 1, 2.5), d = useAppear(sentences, 1, 5);
   const lim = useAppear(sentences, 2), code = useAppear(sentences, 3);
   const Card: React.FC<{ o: number; children: React.ReactNode }> = ({ o, children }) => (
     <div style={{ opacity: o, transform: `translateY(${(1 - o) * 14}px)`, background: C.surface, border: `2px solid ${C.rule2}`, borderRadius: 18, padding: "22px 28px", fontFamily: FONT, fontSize: 36, color: C.ink, lineHeight: 1.3, marginBottom: 22, width: 1640 }}>
