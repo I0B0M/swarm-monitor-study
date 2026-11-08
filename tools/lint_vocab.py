@@ -36,13 +36,14 @@ def lint(text: str) -> list[tuple[int, str]]:
             continue
         line = strip_code(raw)
         low = line.lower()
+        full = raw.lower()
         for ch, name in DASHES.items():
             if ch in line:
                 problems.append((i, name))
         for w in GAME_WORDS:
             if re.search(rf"(?<![\w-]){re.escape(w)}(?![\w-])", low):
                 problems.append((i, f"game word '{w}'"))
-        masked = low
+        masked = full  # "swarm" is visible in code spans too, so it is checked on the whole line
         for ok in ALLOWED_SWARM:
             masked = masked.replace(ok, "")
         masked = re.sub(r"https?://\S+", "", masked)
