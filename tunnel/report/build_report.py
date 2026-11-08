@@ -207,7 +207,12 @@ def main():
     grid = inner.find(tag("tblGrid"))
     for g_ in list(grid): grid.remove(g_)
     for _ in kept: grid.append(mk("gridCol", w="3000"))
-    for c in kept: c.find(tag("tcPr")).find(tag("tcW")).set(tag("w"), "3000"); c.find(tag("tcPr")).find(tag("tcW")).set(tag("type"), "dxa")
+    for c in kept:
+        tp = c.find(tag("tcPr"))
+        if tp is None: tp = mk("tcPr"); c.insert(0, tp)
+        tw = tp.find(tag("tcW"))
+        if tw is None: tw = mk("tcW"); tp.insert(0, tw)
+        tw.set(tag("w"), "3000"); tw.set(tag("type"), "dxa")
     body.remove(kids[3])  # how-to box
     cur = None; heads = {}
     for c in kids[4:-1]:
