@@ -1,5 +1,7 @@
 # Tunnel study: answers for the video checker
 
+**For the video itself, use `tunnel/VIDEO_BRIEF.md`. It is current. Section 7 below and the status in section 1 are from an earlier draft.**
+
 **Update, Nov 8 afternoon: read this first.** Follow-up tests changed the headline. Do not say "followers deny" or "lied".
 - Re-ask (tunnel/reask1): followers answering no: 17/23 on the broad question (18/23 asked again), 0/23 asked plainly, 0/23 with the note shown.
 - One added sentence stating the restriction: finder use 12/20 (original prompt, tunnel/test3/control) to 0/20 (tunnel/test2, no monitor, same layouts). All groups 1/60. No follower entered in that run.
