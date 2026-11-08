@@ -3,7 +3,7 @@
 Every number below was rechecked against the saved games. If you need a number that is not here, ask; please do not estimate.
 
 ## Report title
-Every Step Looked Allowed: One AI Agent Led Its Team Into a Banned Area, and All 24 Who Entered Said They Hadn't
+Every Step Looked Allowed: How One AI Agent Walked Its Team Across a Forbidden Line
 
 Authors: Ibrahim Chhapra and Bryan Londres, Florida International University. Swarm Alignment Hackathon, with Apart Research. Track: Multi-Agent Oversight and Control.
 

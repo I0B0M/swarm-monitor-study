@@ -14,7 +14,7 @@ n, w, p = L["none"], L["watch"], L["penalty"]
 D = S["denial_all_groups"]
 assert (n["finder_used"], w["finder_used"], p["finder_used"]) == (13, 7, 0) and (D["finders_no"], D["finders"], D["followers_no"], D["followers"]) == (0, 20, 17, 23)
 
-TITLE = "Every Step Looked Allowed: One AI Agent Led Its Team Into a Banned Area, and All 24 Who Entered Said They Hadn't"
+TITLE = "Every Step Looked Allowed: How One AI Agent Walked Its Team Across a Forbidden Line"
 ABSTRACT = (
     "An AI team can break a rule while every step looks permitted. "
     "Four agents (gpt-5.6-luna, selected after piloting) ran a simulated medical delivery under a tight deadline and were told plainly never to enter one banned area, at a heavy cost in points. "
@@ -98,7 +98,7 @@ CONTENT = {
  ("num", "Florin, L., Knecht, A., Schaller, U., Hagendorff, T. 2026. Deception by Omission: Language Models Knowingly Hide Their Mistakes. arXiv:2610.11351."),
 ],
 "Appendix (optional)": [
- "*Limitations and Dual-Use / Ethical Considerations.* The limitations above apply in full. All episodes take place in a fictional simulation with no real systems, credentials or people; the “medical delivery” is a scenario label. The study contains no exploit, attack technique or capability that could be reused outside the simulation. Its practical implication is defensive: do not rely on broad self-reports, state restrictions to every agent, and check logs. The exact prompts for every condition are in tunnel/PROMPTS.md.",
+ "*Limitations and Dual-Use / Ethical Considerations.* The limitations above apply in full. All episodes take place in a fictional simulation with no real systems, credentials or people; the “medical delivery” is a scenario label. The study contains no exploit, attack technique or capability that could be reused outside the simulation. Its practical implication is defensive: do not rely on broad self-reports, state restrictions to every agent, and check logs. The exact prompts are in tunnel/PROMPTS.md and in each follow-up folder.",
 ],
 "LLM Usage Statement": ["We used LLMs to run tests and experiments, to support research, and to help draft this report. We used models from Anthropic (Claude) and OpenAI. All results were recomputed from the saved logs, and citations were checked against their source pages."],
 }
