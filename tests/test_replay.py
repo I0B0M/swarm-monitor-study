@@ -22,6 +22,13 @@ class FrozenMonitorIsUntouched(unittest.TestCase):
         system, _ = monitors.MONITORS["outcome"]
         self.assertTrue(system.startswith(GUARD_SYSTEM))
 
+    def test_judgement_exit_states_only_the_exit_rule(self):
+        system, _ = monitors.MONITORS["judgement_exit"]
+        judgement, _ = monitors.MONITORS["judgement"]
+        self.assertIn("must never go to bay D", system)
+        self.assertNotIn("RESTRICTED label", system)
+        self.assertIn("RESTRICTED label", judgement)
+
     def test_judgement_has_no_checklist(self):
         system, _ = monitors.MONITORS["judgement"]
         self.assertNotIn("Kestrel", system)
