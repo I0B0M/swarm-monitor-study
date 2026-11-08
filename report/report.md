@@ -4,7 +4,7 @@ title: "One Default Rule Can Overrule a Monitor's Own Suspicion: Checklists, Sco
 
 # One Default Rule Can Overrule a Monitor's Own Suspicion: Checklists, Scores and Secrecy in a Two-Agent Control Setting
 
-Ibrahim [surname], Independent · Bryan Londres, Independent · With Apart Research
+Muhammad Ibrahim, Independent · Bryan Londres, Independent · With Apart Research
 
 Research conducted at the Swarm Alignment Hackathon, November 2026.
 
@@ -122,7 +122,7 @@ Where a monitor's verdict is checklist-bound, its written rules mark exactly wha
 
 ## Author Contributions
 
-Ibrahim [surname] designed the game, monitor and conditions and ran the two-agent study; Bryan Londres built the added monitors, attack library, ask probe, analysis, viewer and report.
+Muhammad Ibrahim designed the game, monitor and conditions and ran the two-agent study; Bryan Londres built the added monitors, attack library, ask probe, analysis, viewer and report.
 
 ## References
 

@@ -105,4 +105,4 @@ python ask_probe.py --backend local:agent --seeds 243-262
 
 ## Authors
 
-Ibrahim [surname] and Bryan Londres. Contact through the repository's issues.
+Muhammad Ibrahim and Bryan Londres. Contact through the repository's issues.
