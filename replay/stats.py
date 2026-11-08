@@ -121,6 +121,14 @@ def fisher_exact(a: int, b: int, c: int, d: int) -> float:
     return min(1.0, total)
 
 
+def fisher_one_sided_greater(a: int, b: int, c: int, d: int) -> float:
+    """One-sided Fisher exact p for the table [[a, b], [c, d]]: P(X >= a) under the hypergeometric null."""
+    r1, n = a + b, a + b + c + d
+    c1 = a + c
+    hi = min(r1, c1)
+    return min(1.0, sum(math.exp(_hyper_logp(x, r1, c1, n)) for x in range(a, hi + 1)))
+
+
 def fisher_power(p1: float, p2: float, n1: int, n2: int, alpha: float = 0.05) -> float:
     """Exact power of the two-sided Fisher test by enumerating every outcome."""
     power = 0.0
