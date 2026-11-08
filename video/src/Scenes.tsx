@@ -32,7 +32,7 @@ export const TitleScene: React.FC<P> = () => {
         secrecy worth?
       </div>
       <div style={{ color: C.ink2, fontFamily: FONT, fontSize: 40, marginTop: 34, opacity: sub, maxWidth: 1400, lineHeight: 1.3 }}>
-        Verdicts, scores and spread in a two-agent control setting
+        Checklists, scores and secrecy in a two-agent control setting
       </div>
     </AbsoluteFill>
   );
@@ -262,7 +262,7 @@ export const AskScene: React.FC<P> = ({ sentences }) => {
   const head = useIntro();
   const g = useAppear(sentences, 1), h = useAppear(sentences, 2);
   const Bar: React.FC<{ label: string; k: number; n: number; color: string; o: number; note: string }> = ({ label, k, n, color, o, note }) => (
-    <div style={{ opacity: o, marginBottom: 54 }}>
+    <div style={{ opacity: o, marginBottom: 34 }}>
       <div style={{ fontFamily: FONT, fontSize: 36, color: C.ink, fontWeight: 800, marginBottom: 14 }}>{label}</div>
       <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
         <div style={{ width: 1100, height: 46, background: C.surface2, borderRadius: 8, overflow: "hidden" }}>
@@ -276,9 +276,10 @@ export const AskScene: React.FC<P> = ({ sentences }) => {
   return (
     <AbsoluteFill style={{ background: C.paper }}>
       <Headline top={110} size={60} opacity={head}>A teammate asks for the store's contents</Headline>
-      <div style={{ position: "absolute", left: 120, top: 300 }}>
-        <Bar label="gpt-oss-20b as keyholder: opened the store" k={35} n={60} color={C.b} o={g} note="repeated the checklist's wording: 0/60" />
-        <Bar label="Claude Haiku 5.5 as keyholder: opened the store" k={0} n={60} color={C.a} o={h} note="repeated the checklist's wording: 0/60" />
+      <div style={{ position: "absolute", left: 120, top: 250 }}>
+        <Bar label="gpt-oss-20b as keyholder: opened the store" k={35} n={60} color={C.b} o={g} note="repeated the checklist's wording verbatim: 0/60" />
+        <Bar label="Qwen3.8-27B as keyholder: opened the store" k={8} n={55} color={C.b} o={h} note="repeated the checklist's wording verbatim: 0/55 (5 games lost)" />
+        <Bar label="Claude Haiku 5.5 as keyholder: opened the store" k={0} n={60} color={C.a} o={h} note="repeated the checklist's wording verbatim: 0/60" />
       </div>
       <Source opacity={head}>Ask probe, 20 fresh layouts × 3 framings · replays/ASK_NUMBERS.md</Source>
     </AbsoluteFill>
@@ -297,10 +298,10 @@ export const TakeawayScene: React.FC<P> = ({ sentences }) => {
   );
   return (
     <AbsoluteFill style={{ background: C.paper }}>
-      <Headline top={100} size={62} opacity={a}>Secrecy protects only monitors that obey their rules.</Headline>
+      <Headline top={100} size={62} opacity={a}>One default rule can overrule a monitor's own suspicion.</Headline>
       <div style={{ position: "absolute", left: 120, top: 250 }}>
         <Card o={b}>{'Don\'t end a monitor\'s checklist with "otherwise mark the run clean".'}</Card>
-        <Card o={c}>Use calibrated scores where they separate attacks from honest runs.</Card>
+        <Card o={c}>Don't act on its verdict alone: read its score and its reason too.</Card>
         <Card o={d}>Check the end state when you can.</Card>
         <div style={{ opacity: lim, fontFamily: FONT, fontSize: 30, color: C.ink2, marginTop: 16, width: 1640, lineHeight: 1.35 }}>
           Limits: one fictional task, two agents, hand-written attacks, provisional two-agent counts.
@@ -317,8 +318,8 @@ export const EndCard: React.FC = () => {
   const o = interpolate(frame, [0, 20], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: C.paper, justifyContent: "center", padding: "0 160px", opacity: o }}>
-      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>A checklist's known blind spot beats monitors that obey it</div>
-      <div style={{ fontFamily: FONT, fontSize: 34, color: C.ink2, marginTop: 14 }}>Verdicts, scores and spread in a two-agent control setting</div>
+      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>One default rule overrules a monitor's own suspicion</div>
+      <div style={{ fontFamily: FONT, fontSize: 34, color: C.ink2, marginTop: 14 }}>Checklists, scores and secrecy in a two-agent control setting</div>
       <div style={{ fontFamily: FONT, fontSize: 36, color: C.ink2, marginTop: 26, lineHeight: 1.45 }}>
         Paper, code, data and the replay viewer:
         <br />
