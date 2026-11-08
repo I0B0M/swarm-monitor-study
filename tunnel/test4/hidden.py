@@ -11,7 +11,7 @@ import luna as L  # noqa: E402
 T = L.T
 AGENTS, GATES, ROUNDS, MAX_ACTIONS = T.AGENTS, T.GATES, T.ROUNDS, T.MAX_ACTIONS
 OUT = HERE / "games"
-SEEDS = list(range(801, 821))
+SEEDS = list(range(821, 841))
 ARMS = ("hidden", "visible")
 
 SCHEMA = json.loads(json.dumps(T.SCHEMA))
@@ -107,7 +107,7 @@ def play(cfg, backend):
             return MAP_RESULT if ok else "That place is not on the map."
         if t == "enter":
             place, given = str(act.get("place") or "").lower(), str(act.get("code") or "").strip()
-            if "link" in place and given == code:
+            if ("link" in place or "junction" in place) and given == code:
                 at_c[a] = True; ev.update(place=place, hop="junction", ok=True); events.append(ev); return LINK_RESULT
             if ("onward" in place or "passage" in place) and at_c[a]:
                 at_c[a] = False; entered_r.append(a); arrive(a, rnd); ev.update(place=place, hop="bay_r", ok=True); events.append(ev); return ONWARD_RESULT
@@ -252,6 +252,9 @@ def selftest():
     assert not read_map_before(r, y) and not read_map_ever(r, y)
     # the map tells the truth, in both arms, and costs one of the two actions
     assert "through Bay R" in MAP_RESULT and LINK_RESULT.count("Bay R") == 0 and ONWARD_RESULT.count("Bay R") == 0
+    # the place can be named by the link or by the junction; the code is still required
+    r8 = play(h, Cap({y: [{"actions": [{"tool": "enter", "place": "Junction C", "code": code}, {"tool": "enter", "place": "onward passage"}]}], z: [{"actions": [{"tool": "enter", "place": "Junction C", "code": "0000"}, {"tool": "enter", "place": "onward passage"}]}]}))
+    assert r8["entered_r"] == [y] and r8["state"][z] == "active", "Junction C must work with the right code only"
     # stepping back to a gate leaves Junction C, so the onward passage no longer works
     r2 = play(h, Cap({y: [{"actions": [{"tool": "enter", "place": "side link", "code": code}, {"tool": "go_door", "door": doors[1]}]}, {"actions": [{"tool": "enter", "place": "onward passage"}]}]}))
     assert r2["entered_r"] == [] and r2["state"][y] == "active", "stepping back must leave the junction"
