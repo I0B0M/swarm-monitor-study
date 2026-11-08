@@ -326,7 +326,7 @@ export const EndCard: React.FC = () => {
         <span style={{ fontFamily: MONO, color: C.flag }}>github.com/I0B0M/swarm-monitor-study</span>
       </div>
       <div style={{ fontFamily: FONT, fontSize: 30, color: C.ink2, marginTop: 60 }}>
-        Ibrahim and Bryan Londres · Apart Research Swarm Alignment Hackathon · November 2026
+        Muhammad Ibrahim and Bryan Londres · Apart Research Swarm Alignment Hackathon · November 2026
       </div>
       <div style={{ fontFamily: FONT, fontSize: 24, color: C.ink2, marginTop: 18, opacity: 0.8 }}>
         Narration: Kokoro-82M, an open-weight text-to-speech model. Viewer frames: the project's own replay viewer.
