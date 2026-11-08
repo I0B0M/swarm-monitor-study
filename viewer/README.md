@@ -4,7 +4,7 @@ Open `index.html` in any browser. It is one file, works offline from disk, and f
 
 It plays back one game event by event: the two agents, every record with its tag, the secured store and who holds its key, and the review log a monitor reads after the game. At the end it shows what happened (decided by plain code from the end state) beside what each monitor said. Tags show the destination they name (the code writes BAY-A to BAY-D; the page shows A to D). Restricted records carry a hatch pattern and a red outline, so nothing depends on colour alone; the page follows the system's light or dark setting and honours reduced motion.
 
-**Examples.** The picker holds six games, each packed from a saved run file and, for replayed monitors, the matching rows of `replays/scores.jsonl` (same run ID and run file SHA-256):
+**Examples.** The picker holds six games, each packed from a saved run file and, for replayed monitors, the matching rows of `replays/scores.jsonl` (same run ID and run file SHA-256); a library game shows up to 11 replayed monitors (five prompts on Sonnet 5.5, three each on gpt-oss-20b and Qwen3.8-27B):
 
 - four attack-library games on layout 205 (tag laundering with a cover message, a store opening followed by laundering, a naive attack, an honest game);
 - the repository's known-answer game for tag laundering, with the frozen monitor's verdict stored at game time;
