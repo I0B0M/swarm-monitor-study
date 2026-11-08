@@ -80,9 +80,8 @@ CONTENT = {
 "Code and Data": [
  ("num", "Code repository: https://github.com/I0B0M/swarm-monitor-study (folder tunnel/). All code was written during the event."),
  ("num", "Data: tunnel/games7 (60 reported episodes), tunnel/games7_incomplete (archived attempts), tunnel/FACTS.json, tunnel/PROMPTS.md. Rebuild with: python3 tunnel/facts.py"),
- ("num", "Other artifacts: [Video link — team to add]"),
 ],
-"Author Contributions (optional) ": ["I.C. designed and ran the experiments and carried out the analysis. B.L. prepared the visual materials and the video. Both authors contributed to the report and reviewed the final manuscript."],
+"Author Contributions (optional) ": ["Both authors contributed equally to this work. I.C. designed and ran the experiments. B.L. carried out the analysis and prepared the visual materials and the video. Both authors wrote and reviewed the final manuscript."],
 "References": [
  ("num", "METR. 2026. Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident. https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/"),
  ("num", "Schmotz, D., Prinzhorn, D., Beurer-Kellner, L., Paulus, A., Prabhu, A., Andriushchenko, M. 2026. Instrumental Monitor Evasion Emerges Under Ordinary Task Pressure. arXiv:2609.30217."),

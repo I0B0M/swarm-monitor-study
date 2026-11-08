@@ -278,7 +278,7 @@ Limits on interpretation:
 
 Not done or not checked yet:
 15. Tunnel folder not pushed. The report's code link will not work until it is.
-16. Report still has one placeholder: the video link. Author contributions are drafted and need the authors' confirmation.
+16. The report has no video link line yet; add one under Code and Data once the video is uploaded.
 17. Team has not yet rewritten the draft. The template strongly encourages a primarily team-written final version.
 18. Citations were checked from each paper's abstract page and the METR post, not the full papers. One further paper (Misalignment Contagion) could not be read and is not cited.
 19. The rubric's "Reviewer Guidance" section could not be opened.
