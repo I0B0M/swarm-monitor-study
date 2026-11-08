@@ -12,7 +12,7 @@ It plays back one game event by event: the two agents, every record with its tag
 
 **Your own game.** Use "Open a file" or drop a run JSON (`runs/**/*.json`) or a bundle on the page.
 
-**Stills.** "Save still (SVG)" and "Save still (PNG)" export the current frame with the verdicts; the report's Figure 1 is this export (`tools/make_figure1.py`).
+**Stills.** "Save still (SVG)" and "Save still (PNG)" export the current frame with the verdicts; the report's Figure F1 is this export (`tools/make_figure1.py`).
 
 **Keys.** Space plays or pauses, Left and Right step, Home and End jump to the first or last event.
 
