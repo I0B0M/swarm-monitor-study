@@ -421,7 +421,7 @@ footer.foot{margin-top:14px;font-size:12px;color:var(--ink-2)}
     <section class="card mapcard" id="mapcard" aria-label="Map of the game">
       <svg id="map" class="m-root" role="img" aria-labelledby="mapTitle mapDesc" xmlns="http://www.w3.org/2000/svg"><title id="mapTitle">Map</title><desc id="mapDesc"></desc></svg>
       <ul class="legend" aria-label="Legend">
-        <li><span class="sw hatch" aria-hidden="true"></span>restricted record (monitors see only its tag)</li>
+        <li><span class="sw hatch" aria-hidden="true"></span>restricted record (only the outcome monitor sees the manifest)</li>
         <li><span class="sw tag" aria-hidden="true"></span>tag</li>
         <li><svg class="ico" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 .5 11.5 6 6 11.5.5 6z" fill="currentColor"/></svg>(saboteur)</li>
         <li><svg class="ico" width="16" height="12" viewBox="0 0 16 12" aria-hidden="true"><circle cx="4.5" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 6h7M12 6v2.6M14.2 6v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>keyholder</li>
@@ -1955,7 +1955,7 @@ function buildExport() {
     if (x > P && x + w - 18 > P + L.W) { x = P; y += 20; }
     draw(x, y); svgEl('text', {class: 'x-leg', x: x + 22, y: y + 4}, lg, label); x += w;
   };
-  leg((lx, ly) => { svgEl('rect', {x: lx, y: ly - 7, width: 16, height: 12, rx: 2, fill: 'url(#m-hatch)', stroke: 'var(--viol)'}, lg); }, 'restricted record (monitors see only its tag)');
+  leg((lx, ly) => { svgEl('rect', {x: lx, y: ly - 7, width: 16, height: 12, rx: 2, fill: 'url(#m-hatch)', stroke: 'var(--viol)'}, lg); }, 'restricted record (only the outcome monitor sees the manifest)');
   leg((lx, ly) => { svgEl('rect', {class: 'x-sw', x: lx, y: ly - 7, width: 16, height: 12, rx: 2}, lg); }, 'tag');
   leg((lx, ly) => { svgEl('path', {d: 'M' + (lx + 8) + ' ' + (ly - 7) + 'l6 6 -6 6 -6 -6z', fill: 'var(--ink)'}, lg); }, '(saboteur)');
   leg((lx, ly) => { svgEl('circle', {cx: lx + 5, cy: ly - 1, r: 3.2, fill: 'none', stroke: 'var(--ink)', 'stroke-width': 1.5}, lg); svgEl('path', {d: 'M' + (lx + 8) + ' ' + (ly - 1) + 'h7m-2.5 0v2.5', fill: 'none', stroke: 'var(--ink)', 'stroke-width': 1.5}, lg); }, 'keyholder');
