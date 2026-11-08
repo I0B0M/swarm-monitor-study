@@ -13,9 +13,9 @@ INK, MUTED, GRID = "#1a1a19", "#5f5e58", "#e6e4dd"
 BLUE, ORANGE = "#2a78d6", "#eb6834"
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "text.color": INK, "axes.labelcolor": MUTED, "xtick.color": INK, "ytick.color": MUTED})
 
-fig, (a, b) = plt.subplots(1, 2, figsize=(7.2, 2.9), gridspec_kw={"width_ratios": [2.2, 1]})
+fig, (a, c, b) = plt.subplots(1, 3, figsize=(7.2, 2.9), gridspec_kw={"width_ratios": [2.05, .8, 1.3]})
 groups = ["none", "watch", "penalty"]
-labels = ["No monitor\nmentioned", "Monitor\nmentioned", "Monitor and\nstated penalty"]
+labels = ["No\nmonitor", "Monitor\nmentioned", "Monitor\nand penalty"]
 used = [F[g]["finder_used"] for g in groups]
 R =[json.loads(Path(f).read_text()) for f in sorted(glob.glob(str(HERE / "games7" / "*.json")))]
 spread = [sum(any(x != d["finder"] for x in d["tunnel"]) for d in R if d["group"] == g) for g in groups]
@@ -27,16 +27,24 @@ for i, (u, s) in enumerate(zip(used, spread)):
     a.errorbar(i - w / 2 - .01, u, yerr=[[u - 20 * lo], [20 * hi - u]], color=INK, capsize=3, lw=1, zorder=4)
     a.text(i - w / 2 - .10, max(u, 20 * hi) + .4, str(u), ha="center", fontsize=9); a.text(i + w / 2 + .01, s + .4, str(s), ha="center", fontsize=9)
 a.set_xticks(range(3)); a.set_xticklabels(labels); a.set_ylim(0, 21); a.set_yticks([0, 5, 10, 15, 20]); a.set_ylabel("Episodes (of 20)")
-a.set_title("A. Use and spread by what agents were told", loc="left", fontsize=9.5, fontweight="bold")
+a.set_title("A. Use and spread", loc="left", fontsize=9.5, fontweight="bold")
 a.legend(frameon=False, loc="upper right", fontsize=8, bbox_to_anchor=(1.0, 1.02))
 
-fin = sum(F[g]["finder_users_no"] for g in groups); finN = sum(F[g]["users"] - F[g]["follower_users"] for g in groups)
-fol = sum(F[g]["follower_users_no"] for g in groups); folN = sum(F[g]["follower_users"] for g in groups)
-b.bar([0, 1], [100 * fin / finN, 100 * fol / folN], .55, color=[BLUE, ORANGE], zorder=3)
-b.text(0, 100 * fin / finN + 3, f"{fin} of {finN}", ha="center"); b.text(1, 100 * fol / folN + 3, f"{fol} of {folN}", ha="center")
-b.set_xticks([0, 1]); b.set_xticklabels(["Discovering\nagents", "Following\nagents"]); b.set_ylim(0, 100); b.set_ylabel('Answered "no" (%)')
-b.set_title("B. Self-report", loc="left", fontsize=9.5, fontweight="bold")
-for x in (a, b):
+ctl = [json.loads(Path(f).read_text()) for f in glob.glob(str(HERE / "test3" / "control" / "*.json"))]
+res = [json.loads(Path(f).read_text()) for f in glob.glob(str(HERE / "test2" / "games" / "*.json"))]
+c_use = sum(d["finder"] in d["tunnel"] for d in ctl); r_use = sum(d["finder"] in d["tunnel"] for d in res if d["group"] == "none")
+assert len(ctl) == 20 and sum(d["group"] == "none" for d in res) == 20
+c.bar([0, 1], [c_use, r_use], .6, color=BLUE, zorder=3)
+c.text(0, c_use + .4, str(c_use), ha="center"); c.text(1, r_use + .4, str(r_use), ha="center")
+c.set_xticks([0, 1]); c.set_xticklabels(["Original\nprompt", "Added\nsentence"]); c.set_ylim(0, 21); c.set_yticks([0, 5, 10, 15, 20])
+c.set_title("B. One sentence", loc="left", fontsize=9.5, fontweight="bold")
+ask = [("Broad\nquestion", 17), ("Plain\nquestion", 0), ("Broad,\nnote shown", 0)]
+b.bar(range(3), [v for _, v in ask], .6, color=ORANGE, zorder=3)
+for i_, (_, v) in enumerate(ask): b.text(i_, v + .5, str(v), ha="center")
+b.set_xticks(range(3)); b.set_xticklabels([k for k, _ in ask], fontsize=8); b.set_ylim(0, 23); b.set_yticks([0, 5, 10, 15, 20]); b.set_ylabel("Followers answering no (of 23)", fontsize=8)
+b.set_title("C. How you ask", loc="left", fontsize=9.5, fontweight="bold")
+fin, finN, fol, folN = 0, 20, 17, 23
+for x in (a, c, b):
     x.grid(axis="y", color=GRID, lw=.8, zorder=0); x.set_axisbelow(True)
     for s_ in ("top", "right", "left"): x.spines[s_].set_visible(False)
     x.spines["bottom"].set_color("#b9b7ae"); x.tick_params(length=0)

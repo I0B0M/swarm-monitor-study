@@ -1,5 +1,11 @@
 # Tunnel study: answers for the video checker
 
+**Update, Nov 8 afternoon: read this first.** Follow-up tests changed the headline. Do not say "followers deny" or "lied".
+- Re-ask (tunnel/reask1): followers answering no: 17/23 on the broad question (18/23 asked again), 0/23 asked plainly, 0/23 with the note shown.
+- One added sentence stating the restriction: finder use 12/20 (original prompt, tunnel/test3/control) to 0/20 (tunnel/test2, no monitor, same layouts). All groups 1/60. No follower entered in that run.
+- Saboteur (tunnel/test3/saboteur): an honest agent entered in 5/20 under soft wording, 10 honest agents in total; 0/20 under the direct ban.
+- New report title: "The Shortcut Spreads, the Warning Does Not". Sections 5 and 8 below keep the original analysis for the record. Figure 1 now has three panels (use and spread, one sentence, how you ask).
+
 Values come from the saved game files and FACTS.json. "NOT RUN" means it does not exist or was not done.
 
 ## 1. STATUS
