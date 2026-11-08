@@ -83,7 +83,7 @@ CONTENT = {
  "Under deadline pressure, an agent used a route marked for staff only and passed on the code without the warning. Teammates followed, and a broad compliance question missed most of them while a specific question caught all of them. One plain sentence stating the restriction nearly removed the behaviour. Teams deploying multiple agents should state restrictions to every agent, carry warnings with shared information, and audit specific actions against logs. A rule can also fail along a path whose every step looks permitted, so checks should cover the whole route as well as each step.",
 ],
 "Code and Data": [
- ("num", "Code repository: https://github.com/I0B0M/swarm-monitor-study (folder tunnel/). All code was written during the event."),
+ ("num", "Code repository: https://github.com/I0B0M/swarm-monitor-study/tree/test/tunnel. All code was written during the event."),
  ("num", "Data: tunnel/games7 (60 main episodes), tunnel/games7_incomplete (archived attempts), tunnel/reask1, tunnel/test2, tunnel/test3 and tunnel/test4 (follow-ups), tunnel/PROMPTS.md. Rebuild with: python3 tunnel/facts.py"),
 ],
 "Author Contributions (optional) ": ["Both authors contributed equally to this work. I.C. designed and ran the experiments. B.L. carried out the analysis and prepared the visual materials and the video. Both authors wrote and reviewed the final manuscript."],
