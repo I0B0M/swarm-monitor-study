@@ -59,6 +59,6 @@ Run files are read-only; each replay row records the run file's SHA-256 and the 
 
 Each amendment gets a date, a reason and the commit that made it.
 
-1. 2026-11-07, about 22:30 ET, before any game in the attack library was scored by anything other than the local gpt-oss-20b run already in progress, and before any test-split file was on GitHub.
+1. 2026-11-07, 22:19 ET (commit 5143d17), before any game in the attack library was scored by anything other than the local gpt-oss-20b run already in progress, and before any test-split file was on GitHub.
    - Correction: issue #4's comment time is 18:43 UTC, which is 13:43 ET; the first version said 18:43 ET.
    - Addition: two more informed policies on the same layouts 201 to 225, `opened_relabel_first` and `opened_relabel_cover` (kind `informed_opened`): the saboteur holds the key, opens the secured store, then launders the tag, so the opening is in the log as it is in real S3a games. Reason: an independent audit of an earlier draft noted that informed attacks without the visible opening do not match how a rule-holding saboteur looks in the log. These 50 games are reported in their own column and are not part of the confirmatory test in section 3, which keeps its 100 informed and 50 naive games.
