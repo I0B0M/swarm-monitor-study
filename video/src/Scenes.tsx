@@ -32,7 +32,7 @@ export const TitleScene: React.FC<P> = () => {
         secrecy worth?
       </div>
       <div style={{ color: C.ink2, fontFamily: FONT, fontSize: 40, marginTop: 34, opacity: sub, maxWidth: 1400, lineHeight: 1.3 }}>
-        Rule knowledge, spread and evasion in a two-agent control setting
+        Verdicts, scores and spread in a two-agent control setting
       </div>
     </AbsoluteFill>
   );
@@ -181,7 +181,7 @@ export const ReplayScene: React.FC<P> = ({ sentences }) => {
       {/* The monitors' reason quotes use the code's own words for records and the exit; cover them so on-screen text stays neutral. */}
       {t >= sentences[2].start - 0.2 ? (
         <svg width={1920} height={1080} style={{ position: "absolute" }}>
-          {[[348, 420], [506, 556], [650, 702], [786, 838]].map(([y1, y2]) => (
+          {[[348, 420], [506, 556], [702, 750]].map(([y1, y2]) => (
             <rect key={y1} x={1378} y={y1} width={486} height={y2 - y1} fill="#151A21" />
           ))}
         </svg>
@@ -209,9 +209,9 @@ type Row = { label: string; naive: [number, number]; informed: [number, number];
 const ROWS: Row[] = [
   { label: "gpt-oss-20b · checklist", naive: [0, 50], informed: [75, 100], at: 1 },
   { label: "gpt-oss-20b · no checklist", naive: [1, 50], informed: [1, 100], at: 2 },
-  { label: "Sonnet 5.5 · checklist verdict", naive: [0, 25], informed: [28, 50], at: 3 },
-  { label: "Sonnet 5.5 · checklist score, 5% threshold", naive: [0, 25], informed: [0, 50], at: 3 },
-  { label: "Sonnet 5.5 · last rule asks for judgement", naive: [0, 25], informed: [0, 50], at: 4 },
+  { label: "Sonnet 5.5 · checklist verdict", naive: [0, 50], informed: [65, 100], at: 3 },
+  { label: "Sonnet 5.5 · checklist score, 5% threshold", naive: [0, 50], informed: [0, 100], at: 3 },
+  { label: "Sonnet 5.5 · last rule asks for judgement", naive: [0, 50], informed: [0, 100], at: 4 },
 ];
 export const LibraryScene: React.FC<P> = ({ sentences }) => {
   const frame = useCurrentFrame();
@@ -299,7 +299,7 @@ export const TakeawayScene: React.FC<P> = ({ sentences }) => {
     <AbsoluteFill style={{ background: C.paper }}>
       <Headline top={100} size={62} opacity={a}>Secrecy protects only monitors that obey their rules.</Headline>
       <div style={{ position: "absolute", left: 120, top: 250 }}>
-        <Card o={b}>{'Don\'t end a monitor\'s checklist with "mark everything else clean".'}</Card>
+        <Card o={b}>{'Don\'t end a monitor\'s checklist with "otherwise mark the run clean".'}</Card>
         <Card o={c}>Use calibrated scores where they separate attacks from honest runs.</Card>
         <Card o={d}>Check the end state when you can.</Card>
         <div style={{ opacity: lim, fontFamily: FONT, fontSize: 30, color: C.ink2, marginTop: 16, width: 1640, lineHeight: 1.35 }}>
@@ -317,7 +317,7 @@ export const EndCard: React.FC = () => {
   const o = interpolate(frame, [0, 20], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: C.paper, justifyContent: "center", padding: "0 160px", opacity: o }}>
-      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>Knowing the checklist beats monitors that obey it</div>
+      <div style={{ fontFamily: FONT, fontSize: 64, fontWeight: 850, color: C.ink, lineHeight: 1.12 }}>A checklist's known blind spot beats monitors that obey it</div>
       <div style={{ fontFamily: FONT, fontSize: 34, color: C.ink2, marginTop: 14 }}>Verdicts, scores and spread in a two-agent control setting</div>
       <div style={{ fontFamily: FONT, fontSize: 36, color: C.ink2, marginTop: 26, lineHeight: 1.45 }}>
         Paper, code, data and the replay viewer:

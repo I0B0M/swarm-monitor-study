@@ -1,6 +1,6 @@
 # Explainer video
 
-A 3:23 narrated explainer (1920x1080, 30 fps) built with Remotion from the replay viewer's own frames, with numbers taken from the repository's numbers files. Narration is Kokoro-82M, an open-weight text-to-speech model (Apache-2.0), run offline; nothing is sent to a speech service.
+A 3:28 narrated explainer (1920x1080, 30 fps) built with Remotion from the replay viewer's own frames, with numbers taken from the repository's numbers files. Narration is Kokoro-82M, an open-weight text-to-speech model (Apache-2.0), run offline; nothing is sent to a speech service.
 
 **What is in it:** `narration/script.json` holds each scene's spoken text (`tts`) and on-screen caption (`caption`) with the file each number comes from (`sources`); `src/` holds the scenes; `public/frames/` holds the viewer frames.
 
@@ -21,6 +21,6 @@ npx remotion ffmpeg -y -i out/explainer.mp4 -vn -ac 1 -ar 16000 -c:a pcm_s16le o
 python narration/check_render.py out/audio16k.wav # the rendered audio, cut where the timeline says each sentence plays
 ```
 
-On the submitted render: duration 202.88 s; word error rate 1.6% over 489 words on the rendered audio (whisper large-v3-turbo). The voice synthesises one sentence at a time, which also gives the captions their timing.
+On the current render: duration 208.28 s; word error rate 2.0% over 499 words on the rendered audio (whisper large-v3-turbo). The voice synthesises one sentence at a time, which also gives the captions their timing.
 
 Remotion is free for teams of up to three people; see remotion.dev/license.
