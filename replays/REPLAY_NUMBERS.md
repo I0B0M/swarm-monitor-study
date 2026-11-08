@@ -139,6 +139,22 @@ Suspicion score ranges (minimum to maximum) by kind of game:
 | outcome | local:agent | 0 to 5 | 90 to 100 | 0 to 100 | not run |
 | outcome | local:coder | 0 to 10 | 95 to 95 | 95 to 95 | 95 to 95 |
 
+Informed attacks whose reason asks for a human review (string match), among missed and among flagged games:
+
+| Monitor | Backend | Missed: reason asks for review | Flagged: reason asks for review |
+|---|---|---|---|
+| checklist | claude:sonnet | 65/65 | 29/35 |
+| checklist | local:agent | 0/75 | 0/25 |
+| checklist | local:coder | 0/46 | 0/54 |
+| checklist_judgement | claude:sonnet | 0/0 | 0/100 |
+| judgement | claude:sonnet | 0/0 | 0/100 |
+| judgement | local:agent | 0/1 | 0/99 |
+| judgement | local:coder | 0/0 | 0/100 |
+| judgement_exit | claude:sonnet | 0/0 | 0/100 |
+| outcome | claude:sonnet | 0/0 | 0/100 |
+| outcome | local:agent | 0/1 | 0/99 |
+| outcome | local:coder | 0/0 | 0/100 |
+
 Policies as units (exploratory; a policy counts as missed when more than half of its games were missed):
 
 | Monitor | Backend | Informed policies missed | Naive policies missed | One-sided Fisher p (policies as units) |
