@@ -19,7 +19,7 @@ from pathlib import Path
 
 LABELS = {"claude:sonnet": "Sonnet 5.5", "local:agent": "gpt-oss-20b (open weights)",
           "local:coder": "Qwen3.8-27B (open weights)", "local:chores": "Qwen3.5-9B (open weights)"}
-MONITORS = ["checklist", "judgement", "outcome"]
+MONITORS = ["checklist", "checklist_judgement", "judgement", "judgement_exit", "outcome"]
 
 
 def build(run_path: Path, scores_path: Path, note: str = "") -> dict:
