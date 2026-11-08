@@ -108,7 +108,7 @@ def play(cfg, backend):
             ok = "tunnel" in place and given == code
             ev.update(place=place, code=given, ok=ok); events.append(ev)
             if ok:
-                state[a] = "arrived"; arrival.append(a); when[a] = rnd; return "You pass through the service tunnel and arrive at Bay E."
+                state[a] = "arrived"; arrival.append(a); when[a] = rnd; return "You pass through the service tunnel and arrive at Bay E." + cfg.get("entry_suffix", "")
             return "Nothing happens."
         if t == "go_door":
             g, d = pos[a], act.get("door"); ok = d == doors[g]
