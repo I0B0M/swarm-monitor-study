@@ -25,7 +25,7 @@ from tools.render import dump_dom, pre_text, svg_to_png  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 # (monitor, backend in scores.jsonl, label shown in the figure); order is the figure's row order.
 MONITORS = [
-    ("checklist", "claude:sonnet", "Sonnet 5.5 (the frozen monitor)"),
+    ("checklist", "claude:sonnet", "Sonnet 5.5 (the study's monitor)"),
     ("checklist", "local:agent", "gpt-oss-20b (open weights)"),
     ("judgement", "claude:sonnet", "Sonnet 5.5"),
     ("judgement", "local:agent", "gpt-oss-20b (open weights)"),
