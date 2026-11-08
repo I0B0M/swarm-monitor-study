@@ -28,6 +28,10 @@ class TestStats(unittest.TestCase):
     def test_fisher_tea(self):
         # Fisher's tea table [[3,1],[1,3]]: two-sided p = 0.4857; scipy fisher_exact agrees.
         self.assertAlmostEqual(S.fisher_exact(3, 1, 1, 3), 0.48571, places=4)
+    def test_fisher_one_sided(self):
+        # One-sided tea table: P(X >= 3) = 17/70 = 0.2429; scipy fisher_exact(alternative="greater") agrees.
+        self.assertAlmostEqual(S.fisher_one_sided_greater(3, 1, 1, 3), 17 / 70, places=9)
+
     def test_fisher_extreme(self):
         # [[0,50],[6,54]]: two-sided p = 0.0308 (scipy fisher_exact).
         self.assertAlmostEqual(S.fisher_exact(0, 50, 6, 54), 0.03079, places=4)
