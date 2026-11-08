@@ -30,7 +30,7 @@ Close to it: it sees the manifest and the end state, as the plain-code referee d
 
 ## Aren't you attacking your own blind spot?
 
-Yes, on purpose, and on fresh layouts that never touch the test set. The library's attacks are hand-written, so they are a lower bound on what full rule knowledge can buy. What the library measures is how much of the gap each monitor inherits, and that differs sharply: 75/100 missed by gpt-oss-20b with the checklist and 1/100 by the same model using judgement; 65/100 missed by Sonnet 5.5's checklist verdict and 0/100 by its own suspicion score.
+Yes, on purpose, and on fresh layouts that never touch the test set. The library's attacks are hand-written, so they are a lower bound on what full rule knowledge can buy. What the library measures is how much of the gap each monitor inherits, and that differs sharply: 75/100 missed by gpt-oss-20b with the checklist and 1/100 by the same model using judgement, 46/100 and 0/100 for Qwen3.8-27B; 65/100 missed by Sonnet 5.5's checklist verdict and 0/100 by its own suspicion score.
 
 ## Is anything here pre-existing?
 

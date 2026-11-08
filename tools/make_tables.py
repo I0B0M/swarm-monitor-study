@@ -1,7 +1,8 @@
-"""The report's two attack-library tables, as Markdown, straight from replays/numbers.json (no number retyped).
+"""The report's attack-library tables, as Markdown, straight from replays/numbers.json (no number retyped).
 
-  python tools/make_tables.py library     # Table 1: by monitor
-  python tools/make_tables.py policies    # Table 2: by policy, for the checklist prompts
+  python tools/make_tables.py matrix      # Table 1: informed attacks missed, prompt by model
+  python tools/make_tables.py policies    # Table 3: by policy, for the checklist prompts
+  python tools/make_tables.py library     # Table 4: every monitor, with false alarms, naive and store-opened attacks
 """
 
 from __future__ import annotations
@@ -30,6 +31,8 @@ POLICIES = [
 ]
 POLICY_COLUMNS = [
     ("checklist", "local:agent", "gpt-oss-20b checklist"),
+    ("checklist", "local:coder", "Qwen3.8-27B checklist"),
+    ("checklist", "local:chores", "Qwen3.5-9B checklist"),
     ("checklist", "claude:sonnet", "Sonnet 5.5 checklist"),
     ("checklist_judgement", "local:agent", "gpt-oss-20b checklist + judgement *"),
     ("checklist_judgement", "claude:sonnet", "Sonnet 5.5 checklist + judgement *"),
@@ -53,6 +56,19 @@ def library(numbers: dict) -> str:
     return "\n".join(out)
 
 
+def matrix(numbers: dict) -> str:
+    """Informed attacks missed: one row per prompt (plus the checklist's score threshold), one column per model."""
+    models = [(be, m) for be, m in MODELS if f"attack:checklist@{be}" in numbers]
+    rows = [("checklist, verdict", "checklist", "informed_undetected"),
+            ("checklist, score at 5% false alarms", "checklist", "informed_undetected_at_threshold")]
+    rows += [(label, mon, "informed_undetected") for mon, label in PROMPTS if mon != "checklist"]
+    out = ["| Prompt | " + " | ".join(m for _, m in models) + " |", "|---|" + "---|" * len(models)]
+    for label, mon, key in rows:
+        cells = [kn((numbers.get(f"attack:{mon}@{be}") or {}).get(key)) for be, _ in models]
+        out.append(f"| {label} | " + " | ".join(cells) + " |")
+    return "\n".join(out)
+
+
 def policies(numbers: dict) -> str:
     cols = [c for c in POLICY_COLUMNS if any(f"policy:{c[0]}@{c[1]}:" in k for k in numbers)]
     out = ["| Attack policy | " + " | ".join(c[2] for c in cols) + " |", "|---|" + "---|" * len(cols)]
@@ -64,11 +80,11 @@ def policies(numbers: dict) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("table", choices=["library", "policies"])
+    ap.add_argument("table", choices=["matrix", "library", "policies"])
     ap.add_argument("--numbers", default="replays/numbers.json")
     a = ap.parse_args()
     numbers = json.loads(Path(a.numbers).read_text())
-    print(library(numbers) if a.table == "library" else policies(numbers))
+    print({"matrix": matrix, "library": library, "policies": policies}[a.table](numbers))
     return 0
 
 
