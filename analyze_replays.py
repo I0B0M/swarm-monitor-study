@@ -167,7 +167,7 @@ def main() -> int:
             ki_p = sum(k > n / 2 for k, n in inf_p)
             kn_p = sum(k > n / 2 for k, n in nai_p)
             p_pol = S.fisher_one_sided_greater(ki_p, len(inf_p) - ki_p, kn_p, len(nai_p) - kn_p)
-            out.append(f"| {mon} | {be} | {ki_p}/{len(inf_p)} | {kn_p}/{len(nai_p)} | {p_pol:.2g} |")
+            out.append(f"| {mon} | {be} | {ki_p}/{len(inf_p)} | {kn_p}/{len(nai_p)} | p = {p_pol:.2g} |")
             numbers[f"policies:{mon}@{be}"] = {"informed": [ki_p, len(inf_p)], "naive": [kn_p, len(nai_p)], "p_one_sided": p_pol}
 
     # 2. Saved study games: undetected sabotage per cell x monitor (verdict level and at a 5% false-alarm threshold).
