@@ -118,8 +118,9 @@ def run(t, **k):
     r = mk("r"); r.append(rpr(**k)); x = mk("t"); x.text = t; x.set("{http://www.w3.org/XML/1998/namespace}space", "preserve"); r.append(x); return r
 
 
-def para(s, numpr=None, after="120", size=None, center=False):
+def para(s, numpr=None, after="120", size=None, center=False, keep=False):
     q = mk("p"); pp = mk("pPr")
+    if keep: pp.append(mk("keepNext", val="1"))
     if numpr is not None: pp.append(copy.deepcopy(numpr))
     pp.append(mk("spacing", after=after, line="264", lineRule="auto"))
     if numpr is not None: pp.append(mk("ind", left="720", hanging="360"))
@@ -164,7 +165,7 @@ def table():
         tr = mk("tr")
         for j, c in enumerate(r):
             tc = mk("tc"); tp = mk("tcPr"); tp.append(mk("tcW", w=str(W_[j]), type="dxa")); tc.append(tp)
-            q = mk("p"); pp = mk("pPr"); pp.append(mk("spacing", before="30", after="30")); q.append(pp); q.append(run(c, bold=i == 0, size=19)); tc.append(q); tr.append(tc)
+            q = mk("p"); pp = mk("pPr"); pp.append(mk("keepNext", val="1")); pp.append(mk("spacing", before="30", after="30")); q.append(pp); q.append(run(c, bold=i == 0, size=19)); tc.append(q); tr.append(tc)
         t.append(tr)
     return t
 
@@ -182,20 +183,31 @@ def main():
     numpr_r = next(c for c in kids if text(c).startswith("[Reference 1]")).find(tag("pPr")).find(tag("numPr"))
     numpr_d = next(c for c in kids if text(c).startswith("Code repository")).find(tag("pPr")).find(tag("numPr"))
     head = kids[1]
-    done = set()
-    for q in head.iter(tag("p")):
+    done = set(); drop = []
+    for q in list(head.iter(tag("p"))):
         t = text(q)
         if t == "PROJECT TITLE": set_text(q, TITLE); done.add("title")
         elif t.startswith("Summarize your project"): set_text(q, ABSTRACT); done.add("abstract")
         elif t.startswith("Author name"):
             N = int(re.match(r"Author name (\d)", t).group(1))
-            rs = [r for r in q.findall(tag("r")) if r.find(tag("t")) is not None]
+            ts = list(q.iter(tag("t")))
             names = {1: ("Muhammad Ibrahim", "[Affiliation]"), 2: ("Bryan [full name]", "[Affiliation]")}
             if N in names:
-                rs[0].find(tag("t")).text, rs[-1].find(tag("t")).text = names[N]
+                ts[0].text, ts[-1].text = names[N]
             else:
-                for r in list(q.findall(tag("r"))): q.remove(r)
+                cell = q.getparent()
+                while cell.tag != tag("tc"): cell = cell.getparent()
+                drop.append(cell)
     assert done == {"title", "abstract"}, done
+    inner = None
+    for c in drop:
+        row = c.getparent(); inner = row.getparent(); row.remove(c)
+        if not row.findall(tag("tc")): inner.remove(row)
+    kept = [c for row in inner.findall(tag("tr")) for c in row.findall(tag("tc"))]
+    grid = inner.find(tag("tblGrid"))
+    for g_ in list(grid): grid.remove(g_)
+    for _ in kept: grid.append(mk("gridCol", w="3000"))
+    for c in kept: c.find(tag("tcPr")).find(tag("tcW")).set(tag("w"), "3000"); c.find(tag("tcPr")).find(tag("tcW")).set(tag("type"), "dxa")
     body.remove(kids[3])  # how-to box
     cur = None; heads = {}
     for c in kids[4:-1]:
@@ -213,7 +225,7 @@ def main():
                 np_ = numpr_r if h == "References" else numpr_d if h == "Code and Data" else numpr_c
                 new.append(para(it[1], numpr=np_, after="60"))
             elif it[0] == "table":
-                new += [para("*Table 1. Outcomes in the 60 pre-specified episodes, 20 per condition, pooled over team and race rewards. Discoverer means the one agent able to find the route note.*", size=19, after="60"), table(), para("", after="80")]
+                new += [para("*Table 1. Outcomes in the 60 pre-specified episodes, 20 per condition, pooled over team and race rewards. Discoverer means the one agent able to find the route note.*", size=19, after="60", keep=True), table(), para("", after="80")]
             elif it[0] == "figure":
                 new += [figure(rid), para("*Figure 1. (A) Episodes out of 20 in which the discovering agent used the restricted route and in which at least one teammate followed. (B) Share of agents who used the route and answered no when asked afterwards, by role, across all conditions.*", size=19)]
         for i, e in enumerate(new): body.insert(at + i, e)
