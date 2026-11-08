@@ -21,8 +21,8 @@ from replay import stats as S  # noqa: E402
 from tools.render import svg_to_png  # noqa: E402
 
 MODELS = [("claude:sonnet", "Sonnet 5.5"), ("local:agent", "gpt-oss-20b")]  # the Qwen rows are in Table 2 and REPLAY_NUMBERS.md
-PROMPTS = [("checklist", "checklist"), ("judgement", "judgement only"), ("judgement_exit", "judgement, exit rule only"),
-           ("outcome", "outcome check")]
+PROMPTS = [("checklist", "checklist"), ("checklist_judgement", "checklist + judgement"), ("judgement", "judgement only"),
+           ("judgement_exit", "judgement, exit rule only"), ("outcome", "outcome check")]
 THEMES = {
     "light": {"bg": "#fcfcfb", "ink": "#0b0b0b", "ink2": "#52514e", "grid": "#e4e2dc", "naive": "#2a78d6",
               "informed": "#eb6834"},

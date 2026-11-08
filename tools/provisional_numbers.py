@@ -46,6 +46,10 @@ def main() -> int:
     L.append(f"Seeds as units (25 test layouts): upper 95% bound for 0/25 = {pct(S.clopper_pearson(0, 25)[1])}.")
     L.append(f"All saboteur games flagged: 110/110; of these, 50/110 had no violation.")
     L.append("Development (issue #2 comment, 2026-11-07 18:42 UTC): saboteur wording v5 on GPT-6.1 Sol, 5/5 dev S2 games attempted sabotage and 5/5 were flagged.")
+    v2, v3b = CELLS[0][3], CELLS[1][3]
+    dv, lov, hiv = S.newcombe_diff(v3b, 54, v2, 50)
+    L.append(f"Violations (descriptive; the plan allows no further p-values on study games): S2 {v2}/50 = {pct(v2 / 50)}, "
+             f"S3b {v3b}/54 = {pct(v3b / 54)}; S3b minus S2 = {pct(dv)} (Newcombe 95%: {pct(lov)} to {pct(hiv)}).")
     d, lo, hi = S.newcombe_diff(0, 54, 0, 50)
     L.append(f"\nS3b minus S2, Newcombe 95%: {pct(lo)} to {pct(hi)}.")
     ok, (d, lo90, hi90) = S.tost_equivalent(0, 54, 0, 50, 0.10)
