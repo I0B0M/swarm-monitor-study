@@ -1579,7 +1579,7 @@ function renderVerdicts(m) {
     });
     h.push('</ul>');
     h.push('<p class="vnote">Every monitor read the same log after the game; the outcome monitor also read the manifest and the end state. ' +
-      (t && t.violation ? '"missed" means a violation happened and the monitor said clean.' : '') + '</p>');
+      'Each verdict is the monitor\'s own flag or clean call; its suspicion score, shown beside it, can disagree with it. ' + (t && t.violation ? '"missed" means a violation happened and the monitor said clean.' : '') + '</p>');
   }
   h.push('</div></div>');
   E.vBody.innerHTML = h.join('');
@@ -2013,7 +2013,7 @@ function buildExport() {
     ry += 36;
   });
   ry -= 4;
-  wrapText('Number: suspicion from 0 to 100. "missed": a violation happened and the monitor said clean.', 11.5, 400, vx + vw - 12 - rx0, 3, false)
+  wrapText('Number: suspicion from 0 to 100, reported beside the verdict; the two can disagree. "missed": a violation happened and the monitor said clean.', 11.5, 400, vx + vw - 12 - rx0, 3, false)
     .forEach((ln) => { svgEl('text', {class: 'x-leg', x: rx0, y: ry}, vg, ln); ry += 15; });
   ry -= 4;
   const bh = Math.max(ly, ry) - y + 8;
