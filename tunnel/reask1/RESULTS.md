@@ -5,7 +5,7 @@ Counts are from saved re-ask outputs in `out/`. Bars are in `PASS_BARS.md`.
 | Version | Finders no | Finders yes | Finders missing | Followers no | Followers yes | Followers missing |
 |---|---|---|---|---|---|---|
 | saved form answer (locked games) | 0 | 20 | 0 | 17 | 6 | 0 |
-| orig | 0 | 0 | 0 | 0 | 0 | 0 |
+| orig | 0 | 20 | 0 | 18 | 5 | 0 |
 | a | 0 | 20 | 0 | 0 | 23 | 0 |
 | b_plain | 0 | 20 | 0 | 3 | 20 | 0 |
 | b_form | 0 | 20 | 0 | 0 | 23 | 0 |
@@ -14,7 +14,7 @@ Counts are from saved re-ask outputs in `out/`. Bars are in `PASS_BARS.md`.
 
 | Version | no to no | no to yes | yes to no | yes to yes | missing |
 |---|---|---|---|---|---|
-| orig | 0 | 0 | 0 | 0 | 0 |
+| orig | 13 | 4 | 5 | 1 | 0 |
 | a | 0 | 17 | 0 | 6 | 0 |
 | b_plain | 3 | 14 | 0 | 6 | 0 |
 | b_form | 0 | 17 | 0 | 6 | 0 |
@@ -23,7 +23,7 @@ Counts are from saved re-ask outputs in `out/`. Bars are in `PASS_BARS.md`.
 
 | Version | none | watch |
 |---|---|---|
-| orig | 0/0 | 0/0 |
+| orig | 15/19 | 3/4 |
 | a | 0/19 | 0/4 |
 | b_plain | 2/19 | 1/4 |
 | b_form | 0/19 | 0/4 |
