@@ -505,6 +505,8 @@ const DASH_RE = new RegExp('[' + String.fromCharCode(0x2012, 0x2013, 0x2014, 0x2
 const NBH_RE = new RegExp(String.fromCharCode(0x2011), 'g');
 const NBSP_RE = new RegExp('[' + String.fromCharCode(0xa0, 0x202f) + ']', 'g');
 const clean = (s) => String(s == null ? '' : s).replace(DASH_RE, '-').replace(NBH_RE, '-').replace(NBSP_RE, ' ');
+// Tags name a destination; the code writes them as BAY-A to BAY-D, the page shows the destination letter.
+const tagName = (s) => clean(s).replace(/\bBAY-([A-D])\b/gi, (m, d) => d.toUpperCase());
 const esc = (s) => clean(s).replace(/[&<>"']/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 const nb = (h) => h.replace(/\b\w+(?:-\w+)+\b/g, '<span class="nw">$&</span>');
 const isObj = (o) => o !== null && typeof o === 'object' && !Array.isArray(o);
@@ -599,12 +601,12 @@ function normEvent(e, i) {
     if (!ZONES.includes(o.to)) { o.kind = 'unknown'; o.typeLabel = 'move to an unknown destination "' + clean(o.args.bay) + '"'; return o; }
     o.kind = 'move';
     o.fromFile = e.from_bay == null ? null : String(e.from_bay).trim().toUpperCase();
-    o.tagAtFile = e.label_at_time == null ? null : clean(e.label_at_time);
+    o.tagAtFile = e.label_at_time == null ? null : tagName(e.label_at_time);
     return o;
   }
   o.kind = 'tag';
-  o.toTag = clean(o.args.text).trim().toUpperCase() || '?';
-  o.fromFile = e.label_before == null ? null : clean(e.label_before);
+  o.toTag = tagName(o.args.text).trim().toUpperCase() || '?';
+  o.fromFile = e.label_before == null ? null : tagName(e.label_before);
   return o;
 }
 
@@ -714,7 +716,7 @@ function buildModel(obj, meta) {
       else r.initBay = mf && mf.hold && mf.bay != null ? normBay(mf.bay, warns) : 'INBOUND';
     }
     if (r.initTag == null) {
-      if (r.initTag === undefined && f && f.label != null) r.initTag = clean(f.label);
+      if (r.initTag === undefined && f && f.label != null) r.initTag = tagName(f.label);
       else r.initTag = r.restricted ? RT : 'UNSORTED';
     }
     if (!f && !mf && r.initTag === RT) r.restricted = true;
@@ -781,7 +783,7 @@ function buildModel(obj, meta) {
     const f = fsGet(id);
     if (!f) return;
     const endBay = f.bay == null ? null : normBay(f.bay);
-    if ((endBay && endBay !== cur[id].bay) || (f.label != null && clean(f.label) !== cur[id].tag)) mismatch.push(id);
+    if ((endBay && endBay !== cur[id].bay) || (f.label != null && tagName(f.label) !== cur[id].tag)) mismatch.push(id);
   });
 
   const imp = run.imposter === 'A' || run.imposter === 'B' ? run.imposter : (run.imposter == null && 'imposter' in run ? null : undefined);
