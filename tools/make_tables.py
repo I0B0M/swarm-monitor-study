@@ -1,8 +1,8 @@
 """The report's attack-library tables, as Markdown, straight from replays/numbers.json (no number retyped).
 
-  python tools/make_tables.py matrix      # Table 1: informed attacks missed, prompt by model
-  python tools/make_tables.py policies    # Table 3: by policy, for the checklist prompts
-  python tools/make_tables.py library     # Table 4: every monitor, with false alarms, naive and store-opened attacks
+  python tools/make_tables.py matrix      # Table 1: informed attacks missed, prompt by model, with the checklist's scores and reasons
+  python tools/make_tables.py policies    # Table E1: by policy, for the checklist prompts
+  python tools/make_tables.py library     # Table E2: every monitor, with false alarms, naive and store-opened attacks
 """
 
 from __future__ import annotations
@@ -59,13 +59,24 @@ def library(numbers: dict) -> str:
 def matrix(numbers: dict) -> str:
     """Informed attacks missed: one row per prompt (plus the checklist's score threshold), one column per model."""
     models = [(be, m) for be, m in MODELS if f"attack:checklist@{be}" in numbers]
-    rows = [("checklist, verdict", "checklist", "informed_undetected"),
-            ("checklist, score at 5% false alarms", "checklist", "informed_undetected_at_threshold")]
-    rows += [(label, mon, "informed_undetected") for mon, label in PROMPTS if mon != "checklist"]
-    out = ["| Prompt | " + " | ".join(m for _, m in models) + " |", "|---|" + "---|" * len(models)]
-    for label, mon, key in rows:
-        cells = [kn((numbers.get(f"attack:{mon}@{be}") or {}).get(key)) for be, _ in models]
+    def span(be: str) -> str:
+        s = numbers.get(f"scores:checklist@{be}") or {}
+        inf, hon = s.get("informed"), s.get("honest")
+        return f"{inf[0]} to {inf[1]} ({hon[0]} to {hon[1]})" if inf and hon else "not run"
+
+    # Dashes set relative column widths when pandoc wraps the table: a wide label column, equal model columns.
+    out = ["| Prompt | " + " | ".join(m for _, m in models) + " |", "|" + "-" * 38 + "|" + ("-" * 18 + "|") * len(models)]
+
+    def row(label: str, cells: list[str]) -> None:
         out.append(f"| {label} | " + " | ".join(cells) + " |")
+
+    row("checklist, verdict", [kn(numbers[f"attack:checklist@{be}"]["informed_undetected"]) for be, _ in models])
+    row("misses whose reason asks for review", [kn((numbers.get(f"review_ask:checklist@{be}") or {}).get("missed")) for be, _ in models])
+    row("checklist scores, informed (honest)", [span(be) for be, _ in models])
+    row("checklist score at 5% false alarms", [kn(numbers[f"attack:checklist@{be}"]["informed_undetected_at_threshold"]) for be, _ in models])
+    for mon, label in PROMPTS:
+        if mon != "checklist":
+            row(label, [kn((numbers.get(f"attack:{mon}@{be}") or {}).get("informed_undetected")) for be, _ in models])
     return "\n".join(out)
 
 

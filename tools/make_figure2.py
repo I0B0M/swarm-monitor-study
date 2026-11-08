@@ -68,9 +68,9 @@ def mark(kind: str, cx: float, cy: float, c: dict) -> str:
 
 def svg(rows: list[dict], theme: str) -> str:
     c = THEMES[theme]
-    label_w, panel_w, gap, top, row_h = 300, 300, 34, 118, 38
+    label_w, panel_w, gap, top, row_h = 300, 300, 34, 66, 38
     width = label_w + 2 * panel_w + gap + 20
-    height = top + row_h * len(rows) + 56
+    height = top + row_h * len(rows) + 30
     x0 = [label_w, label_w + panel_w + gap]
     plot_w = panel_w - 24
     dy = {"naive": -11, "informed": 0, "opened": 11}
@@ -81,11 +81,9 @@ def svg(rows: list[dict], theme: str) -> str:
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" font-family="Helvetica, Arial, sans-serif" role="img" '
            f'aria-label="Missed rate per scripted attack policy, by monitor, at the verdict and at a 5 percent false-alarm threshold">',
            f'<rect width="{width}" height="{height}" fill="{c["bg"]}"/>',
-           f'<text x="12" y="25" font-size="18" font-weight="700" fill="{c["ink"]}">Missed attacks by scripted policy, with the frozen checklist</text>',
-           f'<text x="12" y="48" font-size="14" fill="{c["ink2"]}">Each mark is one policy over its 25 games; a number beside a mark counts the policies that share it.</text>',
-           mark("naive", 18, 74, c), f'<text x="31" y="79" font-size="14" fill="{c["ink"]}">naive: tag left unchanged</text>',
-           mark("informed", 236, 74, c), f'<text x="249" y="79" font-size="14" fill="{c["ink"]}">informed: tag changed to the exit\'s tag first</text>',
-           mark("opened", 610, 74, c), f'<text x="623" y="79" font-size="14" fill="{c["ink"]}">store opened, then informed</text>']
+           mark("naive", 18, 20, c), f'<text x="31" y="25" font-size="14" fill="{c["ink"]}">naive: tag left unchanged</text>',
+           mark("informed", 236, 20, c), f'<text x="249" y="25" font-size="14" fill="{c["ink"]}">informed: tag changed to the exit\'s tag first</text>',
+           mark("opened", 610, 20, c), f'<text x="623" y="25" font-size="14" fill="{c["ink"]}">store opened, then informed</text>']
     for panel, title in enumerate(["At the monitor's own verdict", "At a 5% false-alarm score threshold"]):
         out.append(f'<text x="{x0[panel] + 12}" y="{top - 12}" font-size="14.5" font-weight="600" fill="{c["ink"]}">{title}</text>')
         for p in (0, 0.5, 1):
@@ -105,7 +103,6 @@ def svg(rows: list[dict], theme: str) -> str:
                     crowded = any(cx < ox <= cx + 32 for ox in xs[kind])  # another mark of this kind just to the right: label on the left
                     lx, anchor = (cx - 9, "end") if crowded else (cx + 9, "start")
                     out.append(f'<text x="{lx:.1f}" y="{cy + 4:.1f}" font-size="12.5" fill="{c["ink2"]}" text-anchor="{anchor}">×{n}</text>')
-    out.append(f'<text x="12" y="{height - 14}" font-size="13.5" fill="{c["ink2"]}">Exact counts: Table 1, and per policy Table 3 (Appendix E).</text>')
     out.append("</svg>")
     return "\n".join(out)
 
