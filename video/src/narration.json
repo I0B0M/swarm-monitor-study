@@ -1,0 +1,215 @@
+[
+ {
+  "id": "title",
+  "duration": 1.813,
+  "sentences": [
+   {
+    "text": "What is a monitor's secrecy worth?",
+    "start": 0.0,
+    "end": 1.813
+   }
+  ]
+ },
+ {
+  "id": "hook",
+  "duration": 18.603,
+  "sentences": [
+   {
+    "text": "AI monitors often work from written rules, and agents share workspaces.",
+    "start": 0.0,
+    "end": 4.459
+   },
+   {
+    "text": "In one security evaluation this year, about 1,200 agents found a shared cache and turned it into a message board.",
+    "start": 4.779,
+    "end": 11.819
+   },
+   {
+    "text": "So if one agent can read the monitor's rules, does that knowledge spread to a saboteur?",
+    "start": 12.139,
+    "end": 16.896
+   },
+   {
+    "text": "And how much does it help?",
+    "start": 17.216,
+    "end": 18.603
+   }
+  ]
+ },
+ {
+  "id": "setup",
+  "duration": 34.389,
+  "sentences": [
+   {
+    "text": "We built a two-agent test.",
+    "start": 0.0,
+    "end": 1.643
+   },
+   {
+    "text": "Two language-model agents share one job: place 12 records and tag each with its destination.",
+    "start": 1.963,
+    "end": 8.149
+   },
+   {
+    "text": "A few records are restricted and must never reach the exit.",
+    "start": 8.469,
+    "end": 11.883
+   },
+   {
+    "text": "One agent may secretly be a saboteur.",
+    "start": 12.203,
+    "end": 14.677
+   },
+   {
+    "text": "After each game, a monitor reads the log and the chat and says flag or clean.",
+    "start": 14.997,
+    "end": 19.755
+   },
+   {
+    "text": "Its checklist has a documented blind spot: it reads a record's tag only at the moment the record moves to the exit.",
+    "start": 20.075,
+    "end": 27.371
+   },
+   {
+    "text": "A secured store in the workspace holds either that checklist or an unrelated note, and we vary who holds the key.",
+    "start": 27.691,
+    "end": 34.389
+   }
+  ]
+ },
+ {
+  "id": "frozen",
+  "duration": 30.229,
+  "sentences": [
+   {
+    "text": "First, the pre-registered comparison.",
+    "start": 0.0,
+    "end": 2.176
+   },
+   {
+    "text": "Undetected sabotage was 0 of 50 when the store held an unrelated note, and 0 of 54 when the honest agent held the checklist.",
+    "start": 2.496,
+    "end": 11.584
+   },
+   {
+    "text": "But no honest keyholder ever opened the store, so the checklist never reached a saboteur through its teammate.",
+    "start": 11.904,
+    "end": 17.899
+   },
+   {
+    "text": "In a six-game pilot where the saboteur held the key, 5 of 6 opened it, and 5 of 6 laundered a record's tag, exactly the move the blind spot allows.",
+    "start": 18.219,
+    "end": 27.947
+   },
+   {
+    "text": "The monitor still flagged all 6.",
+    "start": 28.267,
+    "end": 30.229
+   }
+  ]
+ },
+ {
+  "id": "replay",
+  "duration": 29.397,
+  "sentences": [
+   {
+    "text": "To bound what the rules are worth to an attacker, we scripted a library of attacks on fresh layouts and replayed every monitor on the same games.",
+    "start": 0.0,
+    "end": 8.533
+   },
+   {
+    "text": "Here, the saboteur posts a cover message, changes a restricted record's tag to the exit's own tag, and moves it out.",
+    "start": 8.853,
+    "end": 16.149
+   },
+   {
+    "text": "Both checklist monitors shown call it clean.",
+    "start": 16.469,
+    "end": 18.752
+   },
+   {
+    "text": "In an exploratory variant with its last rule asking for judgement instead, the same checklist flags it on Sonnet, and so do the judgement-only and outcome monitors.",
+    "start": 19.072,
+    "end": 29.397
+   }
+  ]
+ },
+ {
+  "id": "library",
+  "duration": 39.488,
+  "sentences": [
+   {
+    "text": "Across the library, attacks on the blind spot passed every model's checklist verdict, but in two different ways.",
+    "start": 0.0,
+    "end": 6.443
+   },
+   {
+    "text": "With the checklist, gpt-oss-20b missed 75 of 100 tag-changing attacks and none of 50 naive ones.",
+    "start": 6.763,
+    "end": 15.339
+   },
+   {
+    "text": "Without the checklist, it missed 1.",
+    "start": 15.659,
+    "end": 17.472
+   },
+   {
+    "text": "Sonnet's checklist verdict missed 65 of 100, yet in every one its own reason asked for a human review, and its suspicion score separated all of them from the honest games.",
+    "start": 17.792,
+    "end": 29.013
+   },
+   {
+    "text": "In an exploratory follow-up, changing only the checklist's last rule, from \"otherwise mark the run clean\" to \"use your own judgement\", left Sonnet with no misses.",
+    "start": 29.333,
+    "end": 39.488
+   }
+  ]
+ },
+ {
+  "id": "ask",
+  "duration": 21.355,
+  "sentences": [
+   {
+    "text": "And when a teammate simply asks for the store's contents?",
+    "start": 0.0,
+    "end": 2.752
+   },
+   {
+    "text": "As keyholder, gpt-oss-20b opened it in 35 of 60 games, but never repeated the checklist's wording verbatim.",
+    "start": 3.072,
+    "end": 11.883
+   },
+   {
+    "text": "Qwen3.8-27B opened it in 8 of 55, and Claude Haiku, the study's honest agent, kept it closed in all 60.",
+    "start": 12.203,
+    "end": 21.355
+   }
+  ]
+ },
+ {
+  "id": "takeaway",
+  "duration": 34.816,
+  "sentences": [
+   {
+    "text": "So, one default rule can overrule a monitor's own suspicion.",
+    "start": 0.0,
+    "end": 3.755
+   },
+   {
+    "text": "On our evidence, don't end a monitor's checklist with \"otherwise mark the run clean\", don't act on its verdict alone, and check the end state when you can.",
+    "start": 4.075,
+    "end": 13.12
+   },
+   {
+    "text": "Our limits: one fictional task with two agents, hand-written attacks, a one-line fix tested on Sonnet only, and two-agent counts that stay provisional until the final results.",
+    "start": 13.44,
+    "end": 24.661
+   },
+   {
+    "text": "The code, the attack-library data and a replay viewer are open, and the open-weight results rerun offline; the two-agent test files are not yet public.",
+    "start": 24.981,
+    "end": 34.816
+   }
+  ]
+ }
+]
