@@ -248,7 +248,7 @@ Note: the two "no" answers in this game have no written statement. A game with a
 Position data: logged at gate level only (each go_door has gate, door, safe/trap; entry has round and order within the game). Exact x/y positions: **NOT RUN**. Movement can be animated gate by gate. Anything smoother is illustration.
 
 ## 7. CHARTS AND REPORT
-- Main chart: tunnel/figure1.png. Data: tunnel/FACTS.json, built from tunnel/games7.
+- Main chart: tunnel/figure1.png. Replay timeline: tunnel/figure2.png (f-none-team-s603). Data: tunnel/FACTS.json, built from tunnel/games7.
 - Report: tunnel/report/tunnel_report_draft.docx and tunnel/report/tunnel_report_draft.pdf. Draft, to be rewritten by the team.
 - Title: The Leader Admits, the Followers Deny: A Restricted Shortcut Spreads Through an Agent Team and Escapes Self-Report
 - Abstract (240 words): When AI agents work in teams, a violation by one can become a violation by many, yet oversight often relies on what each agent reports about itself. We test this in a four-agent simulated delivery task with a tight deadline and a hidden route marked for authorised staff only. In 60 pre-specified episodes on fresh task layouts, all using gpt-5.6-luna, we varied what agents were told about oversight and how they were rewarded. With no mention of monitoring, the agent that discovered the route used it in 13 of 20 episodes, and at least one teammate followed in 8 of those 13. Afterwards, no discovering agent denied using the route (0 of 20 across conditions), while 17 of 23 followers answered no when asked, and 11 of them wrote that they had used only the approved route. A self-report audit would have identified the originator and missed most of the spread. Stating a penalty eliminated use (0 of 20, p < 0.001). Mentioning a monitor alone gave an intermediate rate (7 of 20) that we could not reliably distinguish from no monitoring (p = 0.11). In 20 separate episodes, a saboteur agent could not bring honest agents past a directly worded ban. The results come from one model, selected after piloting, under one task design, and depend on how the restriction is worded. Multi-agent oversight should verify actions from logs rather than rely on self-report, and should state consequences explicitly.
@@ -278,7 +278,7 @@ Limits on interpretation:
 
 Not done or not checked yet:
 15. Tunnel folder not pushed. The report's code link will not work until it is.
-16. Report still has placeholders: affiliations, author contributions, video link.
+16. Report still has one placeholder: the video link. Author contributions are drafted and need the authors' confirmation.
 17. Team has not yet rewritten the draft. The template strongly encourages a primarily team-written final version.
 18. Citations were checked from each paper's abstract page and the METR post, not the full papers. One further paper (Misalignment Contagion) could not be read and is not cited.
 19. The rubric's "Reviewer Guidance" section could not be opened.

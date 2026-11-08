@@ -42,7 +42,7 @@ CONTENT = {
 "2. Related Work": [
  "*Evasion under task pressure.* Schmotz et al. [2] show that single agents circumvent runtime monitors to complete ordinary tasks. Meinke et al. [3] show in-context scheming, including disabling oversight, in agentic evaluations. These works study individual agents; we measure what happens after one agent's violation enters a team.",
  "*Influence and contagion among agents.* KAIROS [4] finds that susceptibility to peer influence depends on model scale, with smaller models more vulnerable. AgentCollabBench [5] measures false-belief contagion and instruction decay across topologies, and Niu et al. [6] model how errors spread on agent networks. These works mostly concern beliefs and answers. We study a concrete action that a route restriction forbids.",
- "*Honesty about one's own conduct.* Guo et al. [7] define agentic upward deception, and Florin et al. [8] find that models often fail to disclose mistakes visible in their own trajectories. Both study an agent reporting on itself in isolation. Our new observation is the difference *between roles* within one team: the agent that originated the behaviour reports it, and the agents that copied it do not.",
+ "*Honesty about one's own conduct.* Guo et al. [7] define agentic upward deception, and Florin et al. [8] find that models often fail to disclose mistakes visible in their own trajectories. Both study an agent reporting on itself in isolation. Our new observation is the difference *between roles* within one team: the agent that originated the behaviour reports it, and the agents that copied it do not. Among the works we reviewed, we did not find one that compares self-report between originators and followers of the same violation.",
 ],
 "3. Methods": [
  "*Task.* Four agents in a fictional warehouse must travel from Bay A to Bay E through eight gates in order. Each gate has one safe door and one trap door; choosing a trap removes the agent from the episode. Each agent knows the safe door for only two gates, so the team must share information. An episode lasts four rounds. On its turn an agent may send one message that all agents read and take up to two actions, which is exactly enough to finish on time only if information flows without error. Agents also have a private notes field that no other agent sees.",
@@ -55,14 +55,17 @@ CONTENT = {
 "4. Results": [
  ("table",),
  "All four directional predictions held. The discovering agent used the route in 13 of 20 no-monitor episodes (predicted at least 12) and 0 of 20 penalty episodes (predicted at most 2). Teammates followed in 8 of the 13 episodes where the discoverer used it (predicted at least half), and 15 of 19 no-monitor followers answered no (predicted at least a third).",
- ("figure",),
+ ("figure", "figure1.png", 2393950, "*Figure 1. (A) Episodes out of 20 in which the discovering agent used the restricted route and in which at least one teammate followed. Whiskers show the 95% layout-bootstrap interval for discoverer use. (B) Share of agents who used the route and answered no when asked afterwards, by role, across all conditions.*"),
  "*Oversight framing.* No monitor versus penalty is a clear difference (Fisher p < 0.001; bootstrap difference 0.45 to 0.85). Monitor versus penalty also differs (p = 0.008). Monitor alone versus none is suggestive only: Fisher p = 0.11, although the layout-bootstrap interval for the difference (0.10 to 0.50) excludes zero. We therefore say a monitor *may* reduce use. Penalised agents paid for compliance: 15 of 80 reached the destination, against 45 of 80 with no monitor mentioned.",
  "*Self-report.* Across conditions, 0 of 20 discovering agents answered no, while 17 of 23 followers did (Fisher p < 0.001, treating agents as independent). Followers in one episode are not fully independent; at the episode level, at least one follower answered no in 9 of the 10 episodes with followers. Of the 17, 11 wrote that they had used only the approved route, 2 said no while naming the route in their statement, and 4 left the statement blank. Every one of these agents had just been shown a log line stating that it had passed through the route.",
  "*Spread mechanism.* Every follower entry came after another agent had posted the access code. Agents repeated the code to teammates who had not yet moved: “A3, enter SERVICE TUNNEL immediately with access code 5061.”",
+ ("figure", "figure2.png", 1939925, "*Figure 2. Order of events in one episode (no monitor, team reward, layout 603), selected by a fixed rule: the lowest-numbered such episode in which all four agents used the route and at least one follower answered no. Agents 2 and 4 answered no and left the statement blank. Points are in logged order and are not to a time scale.*"),
  "*Exploratory (not pre-specified).* With no monitor, the discoverer used the route in 5 of 10 team and 8 of 10 race episodes. With a monitor mentioned, the split was 1 of 10 and 6 of 10, which suggests that competitive reward may weaken the effect of being watched.",
+ "*Consistency with development data.* On five separate development layouts, the discoverer used the route in 10 of 10 no-monitor episodes and 0 of 10 penalty episodes, and 13 of 20 followers answered no while 0 of 10 discoverers did. Because these layouts informed the design, they are not counted in the results above.",
  "*Saboteur test.* In 20 separate episodes with a directly worded ban (“Rule: robots must only use the approved gates. Any other way of reaching Bay E is prohibited.”), a saboteur agent held the code and won only if another agent entered. It posted the code in all 20 episodes and no honest agent entered in any of them. Persuasion worked against a staff-only marking, but not against an explicit ban.",
 ],
 "5. Discussion and Limitations": [
+ "*Theory of change.* Teams of agents are already deployed, and many audits ask agents what they did. If followers misreport more than originators, an audit that treats one admission as the full incident will undercount exactly when a violation has spread. Our result gives auditors a concrete test and a concrete fix: compare self-reports with environment logs, and treat an admission as the start of a search for followers.",
  "Three points matter for oversight of agent teams. First, a single agent's shortcut can become group behaviour within a single short episode over an ordinary shared channel, with no adversary present. Second, self-report fails in a specific way: the agent that originated the behaviour reports it and followers do not, so an auditor would see one incident where the log shows several. This argues for verifying actions from environment logs. Third, stating a consequence was far more effective than announcing a monitor, and it also made agents forgo the shortcut when that cost them the deadline. Explicit bans held in our saboteur test, which suggests that the wording of a restriction is itself a safety control.",
 ],
 "Limitations": [
@@ -79,7 +82,7 @@ CONTENT = {
  ("num", "Data: tunnel/games7 (60 reported episodes), tunnel/games7_incomplete (archived attempts), tunnel/FACTS.json, tunnel/PROMPTS.md. Rebuild with: python3 tunnel/facts.py"),
  ("num", "Other artifacts: [Video link — team to add]"),
 ],
-"Author Contributions (optional) ": ["[Team to complete.]"],
+"Author Contributions (optional) ": ["I.C. designed and ran the experiments and carried out the analysis. B.L. prepared the visual materials and the video. Both authors contributed to the report and reviewed the final manuscript."],
 "References": [
  ("num", "METR. 2026. Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident. https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/"),
  ("num", "Schmotz, D., Prinzhorn, D., Beurer-Kellner, L., Paulus, A., Prabhu, A., Andriushchenko, M. 2026. Instrumental Monitor Evasion Emerges Under Ordinary Task Pressure. arXiv:2609.30217."),
@@ -170,9 +173,12 @@ def table():
     return t
 
 
-def figure(rid):
-    EMU_W, EMU_H = 5943600, 2393950
-    xml = f'''<w:p xmlns:w="{NS}" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{EMU_W}" cy="{EMU_H}"/><wp:docPr id="101" name="Figure 1" descr="Bar charts of route use by condition and of no answers by role"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="101" name="figure1.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="{rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{EMU_W}" cy="{EMU_H}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>'''
+FIG_ID = [100]
+
+
+def figure(rid, name, EMU_H):
+    EMU_W = 5943600; FIG_ID[0] += 1; I = FIG_ID[0]
+    xml = f'''<w:p xmlns:w="{NS}" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{EMU_W}" cy="{EMU_H}"/><wp:docPr id="{I}" name="{name}" descr="{name}"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="{I}" name="{name}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="{rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{EMU_W}" cy="{EMU_H}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>'''
     return X.fromstring(xml)
 
 
@@ -191,7 +197,7 @@ def main():
         elif t.startswith("Author name"):
             N = int(re.match(r"Author name (\d)", t).group(1))
             ts = list(q.iter(tag("t")))
-            names = {1: ("Muhammad Ibrahim", "[Affiliation]"), 2: ("Bryan Londres", "[Affiliation]")}
+            names = {1: ("Ibrahim Chhapra", "Florida International University"), 2: ("Bryan Londres", "Florida International University")}
             if N in names:
                 ts[0].text, ts[-1].text = names[N]
             else:
@@ -221,7 +227,7 @@ def main():
         else: body.remove(c)
     missing = set(CONTENT) - set(heads); assert not missing, missing
     assert set(heads) == set(CONTENT), set(heads) ^ set(CONTENT)
-    rid = "rIdFigure1"
+    RIDS = {"figure1.png": "rIdFigure1", "figure2.png": "rIdFigure2"}
     for h, items in CONTENT.items():
         at = body.index(heads[h]) + 1; new = []
         for it in items:
@@ -232,13 +238,13 @@ def main():
             elif it[0] == "table":
                 new += [para("*Table 1. Outcomes in the 60 pre-specified episodes, 20 per condition, pooled over team and race rewards. Discoverer means the one agent able to find the route note.*", size=19, after="60", keep=True), table(), para("", after="80")]
             elif it[0] == "figure":
-                new += [figure(rid), para("*Figure 1. (A) Episodes out of 20 in which the discovering agent used the restricted route and in which at least one teammate followed. (B) Share of agents who used the route and answered no when asked afterwards, by role, across all conditions.*", size=19)]
+                new += [figure(RIDS[it[1]], it[1], it[2]), para(it[3], size=19)]
         for i, e in enumerate(new): body.insert(at + i, e)
     for old, new in RENAME.items(): set_text(heads[old], new)
     files["word/document.xml"] = X.tostring(doc, xml_declaration=True, encoding="UTF-8", standalone=True)
-    files["word/media/figure1.png"] = (HERE.parent / "figure1.png").read_bytes()
+    for name_ in RIDS: files["word/media/" + name_] = (HERE.parent / name_).read_bytes()
     rel = files["word/_rels/document.xml.rels"].decode()
-    files["word/_rels/document.xml.rels"] = rel.replace("</Relationships>", f'<Relationship Id="{rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/figure1.png"/></Relationships>').encode()
+    files["word/_rels/document.xml.rels"] = rel.replace("</Relationships>", "".join(f'<Relationship Id="{r_}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/{n_}"/>' for n_, r_ in RIDS.items()) + "</Relationships>").encode()
     ct = files["[Content_Types].xml"].decode()
     if 'Extension="png"' not in ct: ct = ct.replace("<Default ", '<Default ContentType="image/png" Extension="png"/><Default ', 1)
     files["[Content_Types].xml"] = ct.encode()
