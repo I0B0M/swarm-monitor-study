@@ -13,6 +13,8 @@ KOKORO_DIR=~/models/kokoro-v1.0 python narration/make_voiceover.py   # public/vo
 npx remotion render Explainer out/explainer.mp4
 ```
 
+The committed frames were captured from the viewer at commit 028b13c (#17). The replay scene's spotlights and the boxes that cover the monitors' quoted reasons are placed for that layout; a viewer with more monitors in its example bundles lists more verdict cards, so recapture from that commit or move the rectangles in `src/Scenes.tsx`.
+
 **Checks:**
 
 ```bash
