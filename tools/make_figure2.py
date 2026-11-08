@@ -69,12 +69,12 @@ def mark(kind: str, cx: float, cy: float, c: dict) -> str:
 
 def svg(rows: list[dict], theme: str) -> str:
     c = THEMES[theme]
-    label_w, panel_w, gap, top, row_h = 300, 310, 34, 112, 34
+    label_w, panel_w, gap, top, row_h = 300, 310, 34, 106, 30
     width = label_w + 2 * panel_w + gap + 24
     height = top + row_h * len(rows) + 66
     x0 = [label_w, label_w + panel_w + gap]
     plot_w = panel_w - 24
-    dy = {"naive": -8, "informed": 0, "opened": 8}
+    dy = {"naive": -7, "informed": 0, "opened": 7}
 
     def X(panel, p):
         return x0[panel] + 12 + p * plot_w
@@ -107,7 +107,7 @@ def svg(rows: list[dict], theme: str) -> str:
                     lx, anchor = (cx - 9, "end") if crowded else (cx + 9, "start")
                     out.append(f'<text x="{lx:.1f}" y="{cy + 3:.1f}" font-size="9.5" fill="{c["ink2"]}" text-anchor="{anchor}">×{n}</text>')
     out.append(f'<text x="12" y="{height - 26}" font-size="10.5" fill="{c["ink2"]}">* exploratory prompts added after the results (amendments 2 and 3). Game totals and honest false alarms are in Table 1;</text>')
-    out.append(f'<text x="12" y="{height - 11}" font-size="10.5" fill="{c["ink2"]}">per-policy counts are in Table 2 and replays/REPLAY_NUMBERS.md.</text>')
+    out.append(f'<text x="12" y="{height - 11}" font-size="10.5" fill="{c["ink2"]}">per-policy counts are in Table 3 (Appendix E) and replays/REPLAY_NUMBERS.md.</text>')
     out.append("</svg>")
     return "\n".join(out)
 
